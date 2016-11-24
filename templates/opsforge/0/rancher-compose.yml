@@ -1,0 +1,36 @@
+.catalog:
+  name: "opsforge"
+  version: v0.5
+  description: "Take devops tooling to the next level"
+  minimum_rancher_version: v0.0.1
+  questions:
+    - variable: BUTTERFLYPORT
+      description: "Shell browser access"
+      label: "Forwarded Port"
+      required: true
+      default: "5757"
+      type: "int"
+    - variable: GITURLWITHCRED
+      description: "Full HTTPS git clone URL including username:password - see example default"
+      label: "GIT clone HTTPS URL with credentials"
+      required: false
+      default: "https://username:password@bitbucket.org/my-shell-git-repo.git"
+      type: "string"
+    - variable: FULLNAME
+      description: "Your full name to be used by GIT commits"
+      label: "Full name"
+      required: true
+      default: "Opsforge User"
+      type: "string"
+    - variable: MYEMAIL
+      description: "Your email to be used by GIT commits"
+      label: "Email address"
+      required: true
+      default: "opsforge.user@test.com"
+      type: "string"
+    - variable: PASTEBINURL
+      description: "Put in the Pastebin URL to have repos cloned. Use an empty ref. if you need none"
+      label: "Pastebin URL for repos.conf"
+      required: true
+      default: "http://pastebin.com/raw/???????"
+      type: "string"
