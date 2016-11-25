@@ -13,7 +13,7 @@ Vagrant.configure(2) do |config|
     opsforge.vm.provider 'virtualbox' do |vb|
       vb.name = 'opsforge-tools'
       vb.memory = 4096
-      vb.customize ['modifyvm', :id, '--natnet1', '192.168.117/24']
+      vb.customize ['modifyvm', :id, '--natnet1', '192.168.117.0/24']
     end
 
     opsforge.vm.host_name = 'opsforge'
@@ -27,10 +27,10 @@ Vagrant.configure(2) do |config|
     opsforge.vm.network 'forwarded_port', guest: 80, host: 80
     opsforge.vm.network 'forwarded_port', guest: 443, host: 443
 
-    # Share files over if necessary
-    opsforge.vm.provision 'file', source: '~/shared', destination: '/home/vagrant/shared'
+    # Sync shared folder if needed
+    opsforge.vm.synced_folder '~/shared', '/home/vagrant/shared'
 
     # Change to devopzsh for ZSH shell or devopsbash for Bash shell
-    opsforge.vm.provision :shell, privileged: false, path: 'setup.sh'
+    opsforge.vm.provision :shell, privileged: false, path: './setup.sh'
   end
 end
