@@ -1,4 +1,4 @@
-# CloudStack on Docker #
+# opsforge box #
 
 This project brings you a fully setup Ubuntu container on Rancher packed with the latest and greatest devops tools. Best consumed cold and together with the related Vagrant box. It is comprised by:
 
