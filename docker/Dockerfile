@@ -4,7 +4,7 @@ FROM ubuntu:16.04
 
 MAINTAINER opsforge.io
 LABEL name="opsforge"
-LABEL version="0.5.0"
+LABEL version="1.0.0"
 
 EXPOSE 5757
 

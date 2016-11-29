@@ -11,17 +11,16 @@ eval "$(chef shell-init zsh)"
 
 shellsource() {
   # Set up shellsource with Rancher attributue
-  if [ $GITURLWITHCRED ]; then
+  if [ $3 ]; then
     git clone --no-checkout $1 ~/home.tmp
     mv -f ~/home.tmp/.git ~/
     rm -rf ~/home.tmp
     cd ~
     git reset --hard HEAD
     chmod 0600 ~/.ssh/id_*
-    source ~/.zshrc
   fi
-  git config --global user.name $2
-  git config --global user.email $3
+  git config --global user.name $1
+  git config --global user.email $2
 }
 
 butterfly-up() {
@@ -45,6 +44,6 @@ repos() {
 # Actions to be done
 
 cd /root
-shellsource ${GITURLWITHCRED} ${FULLNAME} ${MYEMAIL}
+shellsource ${FULLNAME} ${MYEMAIL} ${GITURLWITHCRED}
 repos ${PASTEBINURL}
 butterfly-up

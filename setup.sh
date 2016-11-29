@@ -95,7 +95,7 @@ curl -XPUT http://$hostip:8080/v1/activesettings/1as\!catalog.url -sL -H 'localh
 "source": "Default Environment Variables",
 "value": "community=https://git.rancher.io/community-catalog.git,opsforge=https://github.com/opsforgeio/opsforge.git,library=https://git.rancher.io/rancher-catalog.git"
 }
-EOF &>/dev/null
+EOF
 echo "Done"
 
 

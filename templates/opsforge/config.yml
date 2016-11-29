@@ -1,6 +1,6 @@
 name: opsforge
 description: |
   DevOps instance for the opsforge PaaS
-version: 0.5-opsforge.io
+version: 1.0-opsforge.io
 category: DEVOPS
 license: "Copyright 2016 opsforge.io - All rights reserved"
