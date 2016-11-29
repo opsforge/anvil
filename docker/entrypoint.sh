@@ -29,11 +29,7 @@ butterfly-up() {
 }
 
 repos() {
-  if [ ! -d "$HOME/repos" ]; then
-    mkdir $HOME/repos
-  fi
-
-  curl -fsSL -o /tmp/repos.conf ''
+  curl -fsSL -o /tmp/repos.conf $1
   chmod 0755 /tmp/repos.conf
 
   cd ~/repos
@@ -50,5 +46,5 @@ repos() {
 
 cd /root
 shellsource ${GITURLWITHCRED} ${FULLNAME} ${MYEMAIL}
-repos
+repos ${PASTEBINURL}
 butterfly-up

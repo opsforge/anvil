@@ -46,7 +46,7 @@ echo "Done"
 
 echo ">>> Rancher local server configration:"
 echo -n " - Deploying rancher server image..."
-sudo /bin/bash -c 'docker run -d -v /home/ubuntu/rancher-db:/var/lib/mysql --restart=unless-stopped -p 8080:8080 rancher/server:v1.2.0-pre4-rc14' &>/dev/null
+sudo /bin/bash -c 'docker run -d -v /home/ubuntu/rancher-db:/var/lib/mysql --restart=unless-stopped -p 8080:8080 rancher/server:latest' &>/dev/null
 echo "Done"
 
 echo -n " - Querying local instance IP..."
@@ -95,7 +95,7 @@ curl -XPUT http://$hostip:8080/v1/activesettings/1as\!catalog.url -sL -H 'localh
 "source": "Default Environment Variables",
 "value": "community=https://git.rancher.io/community-catalog.git,opsforge=https://github.com/opsforgeio/opsforge.git,library=https://git.rancher.io/rancher-catalog.git"
 }
-EOF
+EOF &>/dev/null
 echo "Done"
 
 

@@ -44,10 +44,10 @@ RUN cd /tmp && \
 RUN rm -rf ~/.git && \
     cd ~ && \
     rm -rf ~/.oh-my-zsh && \
-    sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
+    bash -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
     git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k && \
     mkdir -p /etc/butterfly/themes/powerlevel9k && \
-    curl -fsSL -o style.sass 'http://pastebin.com/raw/CmHwxw2W' && \
+    curl -fsSL -o /etc/butterfly/themes/powerlevel9k/style.sass 'http://pastebin.com/raw/CmHwxw2W' && \
     chmod 0755 /etc/butterfly/themes/powerlevel9k/style.sass
 
 COPY entrypoint.sh /root/entrypoint.sh
