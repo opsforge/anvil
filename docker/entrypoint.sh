@@ -12,7 +12,7 @@ eval "$(chef shell-init zsh)"
 shellsource() {
   # Set up shellsource with Rancher attributue
   if [ $3 ]; then
-    git clone --no-checkout $1 ~/home.tmp
+    git clone --no-checkout $3 ~/home.tmp
     mv -f ~/home.tmp/.git ~/
     rm -rf ~/home.tmp
     cd ~
