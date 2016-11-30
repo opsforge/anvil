@@ -1,6 +1,6 @@
 cloud9:
   restart: always
-  command: -a :
+  command: "-a : "
   image: sapk/cloud9
   ports:
     - ${PORT}:8181
