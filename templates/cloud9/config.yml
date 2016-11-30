@@ -1,0 +1,6 @@
+name: cloud9
+description: |
+  IDE for lots of languages and much more
+version: 1.0-opsforge.io
+category: DEVOPS
+license: "Copyright 2016 opsforge.io - All rights reserved"

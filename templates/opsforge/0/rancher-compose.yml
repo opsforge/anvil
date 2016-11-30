@@ -1,6 +1,6 @@
 .catalog:
   name: "opsforge"
-  version: v01.0
+  version: v1.0
   description: "AIO devops toolkit"
   minimum_rancher_version: v0.0.1
   questions:
