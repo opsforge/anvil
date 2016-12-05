@@ -7,4 +7,3 @@ cloud9:
     - ${PORT}:8181
   volumes:
     - /home/vagrant/repos:/workspace
-    - /home/vagrant/c9.settings:/root/.c9/user.settings
