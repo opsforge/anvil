@@ -27,9 +27,8 @@ Vagrant.configure(2) do |config|
     opsforge.vm.network 'forwarded_port', guest: 8080, host: 8080
     # Default port for opsforge
     opsforge.vm.network 'forwarded_port', guest: 8001, host: 8001
-
-    # Sync shared folder if needed
-    opsforge.vm.synced_folder '~/shared', '/home/vagrant/shared'
+    # Default port for cloud9
+    opsforge.vm.network 'forwarded_port', guest: 8181, host: 8181
 
     # Change to devopzsh for ZSH shell or devopsbash for Bash shell
     opsforge.vm.provision :shell, privileged: false, path: './setup.sh'
