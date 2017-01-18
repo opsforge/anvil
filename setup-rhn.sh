@@ -16,31 +16,18 @@ Please stand by until the components are provisioned to the base image."
 echo "Pending actions:"
 
 echo -n ">>> Updating and configuring base image..."
-sudo apt-get update &>/dev/null
-sudo apt-get upgrade -y &>/dev/null
-sudo apt-get install zip -y &>/dev/null
-echo "Done"
-
-echo -n ">>> Fixing persistent Ubuntu locale issue..."
-sudo apt-get install language-pack-en -y &>/dev/null
-sudo locale-gen en_GB.UTF-8 &>/dev/null
-echo "Done"
+sudo yum update -y &>/dev/null
 
 echo ">>> Deploying and configuring prerequisites:"
-echo -n " - Installing GIT..."
-sudo apt-get -y install git &>/dev/null
-echo "Done"
-echo -n " - Installing zsh.."
-sudo apt-get -y install zsh &>/dev/null
-echo "Done"
-echo -n " - Installing JQ and Python PIP..."
-sudo apt-get install jq -y &>/dev/null
-sudo apt-get install python-pip -y &>/dev/null
+echo -n " - Installing all required packages..."
+sudo yum install zip git zsh epel-release jq python-pip -y &>/dev/null
 echo "Done"
 
 echo -n ">>> Installing and configuring Docker Engine..."
 sudo /bin/zsh -c 'curl -fsSL https://get.docker.com/ | sh' &>/dev/null
-sudo usermod -aG docker ubuntu &>/dev/null
+sudo usermod -aG docker vagrant &>/dev/null
+sudo systemctl enable docker.service &>/dev/null
+sudo systemctl daemon-reload &>/dev/null
 sudo service docker restart &>/dev/null
 echo "Done"
 

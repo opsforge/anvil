@@ -21,7 +21,7 @@ RUN apt-get update && \
 
 # Tooling
 
-RUN apt-get -y install git zsh curl wget nano telnet dnsutils jq python-pip python-dev libsqlite3-dev libffi-dev libssl-dev && \
+RUN apt-get -y install git zsh curl wget nano telnet dnsutils jq python-pip python-dev libsqlite3-dev libffi-dev libssl-dev netcat sshpass ping inetutils-ping && \
     pip install awscli && \
     apt-get clean
 

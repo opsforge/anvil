@@ -19,7 +19,7 @@ Vagrant.configure(2) do |config|
     end
 
     opsforge.vm.host_name = 'opsforge'
-    opsforge.vm.box = 'ubuntu/xenial64'
+    opsforge.vm.box = 'centos/7'
 
     # Setting shared folders - includes chef config folders and Jungle Disk pem folders
 
@@ -30,7 +30,8 @@ Vagrant.configure(2) do |config|
     # Default port for cloud9
     opsforge.vm.network 'forwarded_port', guest: 8181, host: 8181
 
+    config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
     # Change to devopzsh for ZSH shell or devopsbash for Bash shell
-    opsforge.vm.provision :shell, privileged: false, path: './setup.sh'
+    opsforge.vm.provision :shell, privileged: false, path: './setup-rhn.sh'
   end
 end
