@@ -46,7 +46,7 @@ echo "Done"
 
 echo ">>> Rancher local server configration:"
 echo -n " - Deploying rancher server image..."
-sudo /bin/bash -c 'docker run --name=rancher-server -d -v /home/ubuntu/rancher-db:/var/lib/mysql --restart=always -p 8080:8080 rancher/server:v1.2.0' &>/dev/null
+sudo /bin/bash -c 'docker run --name=rancher-server -d -v /home/ubuntu/rancher-db:/var/lib/mysql --restart=always -p 8080:8080 rancher/server:v1.4.0-rc2' &>/dev/null
 echo "Done"
 
 echo -n " - Querying local instance IP..."
@@ -77,7 +77,7 @@ sudo /bin/bash -c "docker run -t -d --name cattleserver \
  -e CATTLE_AGENT_IP=\"$hostip\" \
  -e CATTLE_HOST_LABLES='type=localresource' \
  --privileged -v /var/run/docker.sock:/var/run/docker.sock \
- -v /var/lib/rancher:/var/lib/rancher rancher/agent:latest $token" &>/dev/null
+ -v /var/lib/rancher:/var/lib/rancher rancher/agent:v1.1.3 $token" &>/dev/null
 echo "Done"
 
 echo -n " - Waiting 30 seconds for container cleanup..."
