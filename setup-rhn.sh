@@ -43,7 +43,7 @@ export hostip=$(hostname -I | awk '{print $1}') &>/dev/null
 echo "Retrieved"
 
 echo -n " - Waiting for API to come online..."
-while [ -z ${testy+x} ]; do
+while [ -z $testy ]; do
 	testy=$(curl -XGET -sIL http://$hostip:8080/v1/registrationtokens | grep 'HTTP*.*200')
 	sleep 5
 done
