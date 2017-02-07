@@ -1,0 +1,6 @@
+name: puppet
+description: |
+  Config Management tool
+version: 1.0-opsforge.io
+category: CONFIG
+license: "Copyright 2017 opsforge.io - All rights reserved"
