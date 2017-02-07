@@ -4,12 +4,12 @@
   description: "Configuration Management tool stack"
   minimum_rancher_version: v1.1.9
   questions:
-    - variable: puppet_port
-      description: "Puppet server listening port"
-      label: "Leave on default unless important to change"
-      required: true
-      default: "8140"
-      type: "int"
+    # - variable: puppet_port
+    #   description: "Puppet server listening port"
+    #   label: "Leave on default unless important to change"
+    #   required: true
+    #   default: "8140"
+    #   type: "int"
     - variable: puppet_mount
       description: "Default mount path for persistent storage"
       label: "Leave on default unless important to change (ends without a /)"

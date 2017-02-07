@@ -4,8 +4,10 @@ services:
     restart: unless-stopped
     hostname: puppet
     image: opsforge/puppetserver
-    ports:
-      - ${puppet_port}:8140
+    #ports:
+    #  - ${puppet_port}:8140
+    expose:
+      - 8140
     volumes:
       - ${puppet_mount}/puppet-data/code:/etc/puppetlabs/code/
       - ${puppet_mount}/puppet-data/puppet/ssl:/etc/puppetlabs/puppet/ssl/
