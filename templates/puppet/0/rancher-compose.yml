@@ -11,8 +11,8 @@
     #   default: "8140"
     #   type: "int"
     - variable: puppet_mount
-      description: "Default mount path for persistent storage"
-      label: "Leave on default unless important to change (ends without a /)"
+      description: "Leave on default unless important to change (ends without a /)"
+      label: "Default mount path for persistent storage"
       required: true
       default: "/mnt/docker"
       type: "string"
