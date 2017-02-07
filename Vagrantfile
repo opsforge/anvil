@@ -1,7 +1,7 @@
 # EULA - All 3rd party components used in this file are the property of their respective owners. The code in this file is the property of OpsForge
 # Disclaimer - This setup was tested and proven on Mac OS X 10.10+ . Systems other than this will require manual adjustments pre-deployment from the user
 #
-# George Svachulay (C) OpsForge . 2016 - All rights reserved
+# Copyright (C) 2017 George Svachulay - Apache 2.0 License
 # Requires the subfolder inline-shells and shell scripts to function.
 
 require 'yaml'

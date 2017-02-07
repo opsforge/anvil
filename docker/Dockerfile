@@ -1,4 +1,4 @@
-# Dockerfile of opsforge.io DevUtils for PaaS use - Copyright (C) 2016 - All rights reserved
+# Dockerfile of opsforge.io DevUtils for PaaS use - Copyright (C) 2017 George Svachulay - Apache 2.0 License
 
 FROM ubuntu:16.04
 
