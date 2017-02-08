@@ -4,8 +4,6 @@ services:
     restart: unless-stopped
     hostname: puppet
     image: opsforge/puppetserver
-    #ports:
-    #  - ${puppet_port}:8140
     expose:
       - 8140
     volumes:
@@ -13,8 +11,6 @@ services:
       - ${puppet_mount}/puppet-data/puppet/ssl:/etc/puppetlabs/puppet/ssl/
       - ${puppet_mount}/puppet-data/puppet/environments:/etc/puppetlabs/puppet/environments/
       - ${puppet_mount}/puppet-data/puppet/serverdata:/opt/puppetlabs/server/data/puppetserver/
-    networks:
-      - puppet
 
   postgres:
     restart: unless-stopped
@@ -27,20 +23,16 @@ services:
       - 5432
     volumes:
       - ${puppet_mount}/puppet-data/puppetdb-postgres/data:/var/lib/postgresql/data/
-    networks:
-      - puppet
 
   puppetdb:
     restart: unless-stopped
-    hostname: puppetdb
+    hostname: puppet.db
     image: opsforge/puppetdb
     expose:
       - 8080
       - 8081
     volumes:
       - ${puppet_mount}/puppet-data/puppetdb/ssl:/etc/puppetlabs/puppet/ssl/
-    networks:
-      - puppet
 
   puppetboard:
     restart: unless-stopped
@@ -48,9 +40,3 @@ services:
     image: opsforge/puppetboard
     expose:
       - 80
-    networks:
-      - puppet
-
-networks:
-  puppet:
-    driver: bridge
