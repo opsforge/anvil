@@ -1,8 +1,8 @@
 .catalog:
   name: "pandorafms"
-  version: v1.0
+  version: v6.0
   description: "Monitoring Tool"
-  minimum_rancher_version: v6.0
+  minimum_rancher_version: v1.1.9
   questions:
     - variable: mysql_data
       description: "The path string for what you want the database under /mnt/docker to store its data in"
