@@ -1,0 +1,12 @@
+.catalog:
+  name: "pandorafms"
+  version: v1.0
+  description: "Monitoring Tool"
+  minimum_rancher_version: v6.0
+  questions:
+    - variable: mysql_data
+      description: "The path string for what you want the database under /mnt/docker to store its data in"
+      label: "Persistent storage"
+      required: true
+      default: "pandorafms-mysql"
+      type: "string"

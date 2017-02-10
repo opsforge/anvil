@@ -1,0 +1,27 @@
+mysql:
+  restart: unless-stopped
+  hostname: mysql
+  image: pandorafms/pandorafms-mysql:6
+  environment:
+    MYSQL_ROOT_PASSWORD: Password123!
+    MYSQL_DATABASE: pandora
+    MYSQL_USER: pandora
+    MYSQL_PASSWORD: pandora
+  expose:
+    - 3306
+  volumes:
+    - /mnt/docker/${mysql_data}/mysql:/var/lib/mysql
+
+console:
+  restart: unless-stopped
+  image: pandorafms/pandorafms-console:6
+  expose:
+    - 8023
+    - 8022
+    - 80
+
+server:
+  restart: unless-stopped
+  image: pandorafms/pandorafms-server:6
+  expose:
+    - 41121
