@@ -15,8 +15,6 @@ mysql:
 console:
   restart: unless-stopped
   image: pandorafms/pandorafms-console:6
-  links:
-    - mysql:mysql
   expose:
     - 8023
     - 8022
@@ -25,7 +23,9 @@ console:
 server:
   restart: unless-stopped
   image: pandorafms/pandorafms-server:6
-  links:
-      - mysql:mysql
+  environment:
+    PANDORA_DB_HOST: 'mysql:3306'
+    PANDORA_DB_USER: pandora
+    PANDORA_DB_PASSWORD: pandora
   expose:
     - 41121
