@@ -1,4 +1,4 @@
-mysql:
+pandorafms-mysql:
   restart: unless-stopped
   hostname: mysql
   image: pandorafms/pandorafms-mysql:6
@@ -16,7 +16,7 @@ console:
   restart: unless-stopped
   image: pandorafms/pandorafms-console:6
   links:
-    - mysql:mysql
+    - pandorafms-mysql:mysql
   expose:
     - 8023
     - 8022
@@ -24,8 +24,8 @@ console:
 
 server:
   restart: unless-stopped
-  image: pandorafms/pandorafms-server:6
+  image: pandorafms/pandorafms-server:latest
   links:
-    - mysql:mysql
+    - pandorafms-mysql:mysql
   expose:
     - 41121
