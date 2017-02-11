@@ -1,7 +1,7 @@
 pandorafms-mysql:
   restart: unless-stopped
   hostname: mysql
-  image: pandorafms/pandorafms-mysql:6
+  image: opsforge/pandorafms-mysql:latest
   environment:
     MYSQL_ROOT_PASSWORD: Password123!
     MYSQL_DATABASE: pandora
@@ -14,7 +14,7 @@ pandorafms-mysql:
 
 console:
   restart: unless-stopped
-  image: pandorafms/pandorafms-console:6
+  image: opsforge/pandorafms-console:latest
   links:
     - pandorafms-mysql:mysql
   expose:
@@ -24,7 +24,7 @@ console:
 
 server:
   restart: unless-stopped
-  image: pandorafms/pandorafms-server:latest
+  image: opsforge/pandorafms-server:latest
   links:
     - pandorafms-mysql:mysql
   expose:
