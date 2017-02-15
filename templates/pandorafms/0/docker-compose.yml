@@ -24,6 +24,7 @@ console:
 
 server:
   restart: unless-stopped
+  hostname: pfms-server
   image: opsforge/pandorafms-server:latest
   links:
     - pandorafms-mysql:mysql
