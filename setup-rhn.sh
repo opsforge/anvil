@@ -35,7 +35,7 @@ echo "Done"
 
 echo ">>> Rancher local server configration:"
 echo -n " - Deploying rancher server image..."
-sudo /bin/bash -c 'docker run --name=rancher-server -d -v /home/ubuntu/rancher-db:/var/lib/mysql --restart=always -p 8080:8080 rancher/server:v1.3.1' &>/dev/null
+sudo /bin/bash -c 'docker run --name=rancher-server -d -v /home/ubuntu/rancher-db:/var/lib/mysql --restart=always -p 8080:8080 rancher/server:v1.4.1' &>/dev/null
 echo "Done"
 
 echo -n " - Querying local instance IP..."
@@ -66,7 +66,7 @@ sudo /bin/bash -c "docker run -t -d --name cattleserver \
  -e CATTLE_AGENT_IP=\"$hostip\" \
  -e CATTLE_HOST_LABLES='type=localresource' \
  --privileged -v /var/run/docker.sock:/var/run/docker.sock \
- -v /var/lib/rancher:/var/lib/rancher rancher/agent:v1.1.3 $token" &>/dev/null
+ -v /var/lib/rancher:/var/lib/rancher rancher/agent:v1.2.0 $token" &>/dev/null
 echo "Done"
 
 echo -n " - Waiting 30 seconds for container cleanup..."
@@ -86,18 +86,6 @@ curl -XPUT http://$hostip:8080/v1/activesettings/1as\!catalog.url -sL -H 'localh
 }
 EOF
 echo "Done"
-
-
-echo ">>> Setting custom Message of the Day:"
-echo "
-                  __
-  ___  _ __  ___ / _| ___  _ _  __ _  ___
- / _ \| '_ \(_-<|  _|/ _ \| '_|/ _\` |/ -_)
- \\___/| .__//__/|_|  \\___/|_|  \\__, |\\___|
-      |_|                      |___/
-
-opsforge version 1.0 - 2016 - LIC Apache 2.0" | sudo tee /etc/motd.tail &>/dev/null
-echo " - Done"
 
 echo "
 

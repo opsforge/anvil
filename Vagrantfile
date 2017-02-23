@@ -29,6 +29,12 @@ Vagrant.configure(2) do |config|
     opsforge.vm.network 'forwarded_port', guest: 8001, host: 8001
     # Default port for cloud9
     opsforge.vm.network 'forwarded_port', guest: 8181, host: 8181
+    # Default port for HTTPS pages
+    opsforge.vm.network 'forwarded_port', guest: 443, host: 443
+    # Default port for Puppet
+    opsforge.vm.network 'forwarded_port', guest: 8140, host: 8140
+    # Default port for PuppetDB
+    opsforge.vm.network 'forwarded_port', guest: 8081, host: 8081
 
     config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
     # Change to devopzsh for ZSH shell or devopsbash for Bash shell

@@ -1,0 +1,6 @@
+name: puppet-legacy
+description: |
+  Config Management tool
+version: 1.0-opsforge.io
+category: CONFIG
+license: "Copyright (C) 2017 George Svachulay - Apache 2.0 License"

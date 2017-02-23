@@ -1,0 +1,12 @@
+.catalog:
+  name: "puppet-3.8"
+  version: v1.0
+  description: "Configuration Management tool stack"
+  minimum_rancher_version: v1.1.9
+  questions:
+    - variable: puppet_mount
+      description: "Leave on default unless important to change (ends without a /)"
+      label: "Default mount path for persistent storage"
+      required: true
+      default: "/mnt/docker"
+      type: "string"
