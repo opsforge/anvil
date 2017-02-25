@@ -35,7 +35,7 @@ echo "Done"
 
 echo ">>> Rancher local server configration:"
 echo -n " - Deploying rancher server image..."
-sudo /bin/bash -c 'docker run --name=rancher-server -d -v /home/ubuntu/rancher-db:/var/lib/mysql --restart=always -p 8080:8080 rancher/server:v1.4.1' &>/dev/null
+sudo /bin/bash -c 'docker run --name=rancher-server -d -v /data/rancher-db:/var/lib/mysql --restart=always -p 8080:8080 rancher/server:v1.4.1' &>/dev/null
 echo "Done"
 
 echo -n " - Querying local instance IP..."
