@@ -26,7 +26,7 @@ sudo yum install -y python-pip &>/dev/null
 echo "Done"
 
 echo -n ">>> Installing and configuring Docker Engine..."
-sudo /bin/zsh -c 'curl -fsSL https://get.docker.com/ | sh' &>/dev/null
+sudo /bin/zsh -c 'curl https://releases.rancher.com/install-docker/1.12.sh | sh' &>/dev/null
 sudo usermod -aG docker vagrant &>/dev/null
 sudo systemctl enable docker.service &>/dev/null
 sudo systemctl daemon-reload &>/dev/null
@@ -35,7 +35,7 @@ echo "Done"
 
 echo ">>> Rancher local server configration:"
 echo -n " - Deploying rancher server image..."
-sudo /bin/bash -c 'docker run --name=rancher-server -d -v /data/rancher-db:/var/lib/mysql --restart=always -p 8080:8080 rancher/server:v1.4.1' &>/dev/null
+sudo /bin/bash -c 'docker run --name=rancher-server -d -v /data/rancher-db:/var/lib/mysql --restart=always -p 8080:8080 rancher/server' &>/dev/null
 echo "Done"
 
 echo -n " - Querying local instance IP..."
@@ -66,7 +66,7 @@ sudo /bin/bash -c "docker run -t -d --name cattleserver \
  -e CATTLE_AGENT_IP=\"$hostip\" \
  -e CATTLE_HOST_LABLES='type=localresource' \
  --privileged -v /var/run/docker.sock:/var/run/docker.sock \
- -v /var/lib/rancher:/var/lib/rancher rancher/agent:v1.2.0 $token" &>/dev/null
+ -v /var/lib/rancher:/var/lib/rancher rancher/agent $token" &>/dev/null
 echo "Done"
 
 echo -n " - Waiting 30 seconds for container cleanup..."
