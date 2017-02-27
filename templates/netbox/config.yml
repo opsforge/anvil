@@ -1,0 +1,6 @@
+name: netbox
+description: |
+  Network mapping tool
+version: 1.0-opsforge.io
+category: Inventory
+license: "Copyright (C) 2017 George Svachulay - Apache 2.0 License"

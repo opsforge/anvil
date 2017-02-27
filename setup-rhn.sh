@@ -62,7 +62,7 @@ echo "Done"
 echo -n " - Registering instance as rancher host with token..."
 export token=$(curl -XGET -sL http://$hostip:8080/v1/projects/1a5/registrationtokens | jq '.data[].registrationUrl' | sed 's/\"//g')
 
-sudo /bin/bash -c "docker run -t -d --name cattleserver \
+sudo /bin/bash -c "docker run -t -d --name tempagent \
  -e CATTLE_AGENT_IP=\"$hostip\" \
  -e CATTLE_HOST_LABLES='type=localresource' \
  --privileged -v /var/run/docker.sock:/var/run/docker.sock \
