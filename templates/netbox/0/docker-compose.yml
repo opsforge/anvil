@@ -18,6 +18,7 @@ services:
     links:
       - postgres
     environment:
+      LOGIN_REQUIRED: 'True'
       SUPERUSER_NAME: admin
       SUPERUSER_EMAIL: netbox@noreply.com
       SUPERUSER_PASSWORD: Password123
