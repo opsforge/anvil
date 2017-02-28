@@ -1,0 +1,12 @@
+.catalog:
+  name: "keeweb"
+  version: v1.4.0
+  description: "Password and secret managment tool"
+  minimum_rancher_version: v0.0.1
+  questions:
+    - variable: mount_path
+      description: "Persistent storage path"
+      label: "Ends without /"
+      required: true
+      default: "/mnt/docker"
+      type: "string"

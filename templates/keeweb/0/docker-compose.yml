@@ -1,0 +1,8 @@
+keeweb:
+  restart: unless-stopped
+  image: antelle/keeweb
+  expose:
+    - 443
+    - 80
+  volumes:
+    - ${mount_path}/keeweb/ssl:/etc/nginx/external/
