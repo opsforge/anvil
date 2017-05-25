@@ -8,4 +8,4 @@ services:
       - ${BUTTERFLYPORT}:5757
     volumes:
       - /home/vagrant/repos:/root/repos
-    network_mode: host
+    network_mode: bridge
