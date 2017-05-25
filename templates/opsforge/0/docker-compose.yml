@@ -1,8 +1,11 @@
-opsforge:
-  restart: always
-  image: opsforge/opsforge:latest
-  command: /bin/zsh -c "/root/entrypoint.sh ${FULLNAME} ${MYEMAIL} ${PASTEBINURL} ${GITURLWITHCRED}"
-  ports:
-    - ${BUTTERFLYPORT}:5757
-  volumes:
-    - /home/vagrant/repos:/root/repos
+version: '2'
+services:
+  opsforge:
+    restart: always
+    image: opsforge/opsforge:latest
+    command: /bin/zsh -c "/root/entrypoint.sh ${FULLNAME} ${MYEMAIL} ${PASTEBINURL} ${GITURLWITHCRED}"
+    ports:
+      - ${BUTTERFLYPORT}:5757
+    volumes:
+      - /home/vagrant/repos:/root/repos
+    network_mode: host
