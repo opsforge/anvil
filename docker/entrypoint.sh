@@ -4,6 +4,7 @@ FULLNAME=$1
 MYEMAIL=$2
 PASTEBINURL=$3
 GITURLWITHCRED=$4
+BTPASS=$5
 
 
 # Eval chef in current session
@@ -24,6 +25,7 @@ shellsource() {
 }
 
 butterfly-up() {
+  echo "root:${BTPASS:-password}" | chpasswd
   butterfly.server.py --host="0.0.0.0" --port=5757 --unsecure
 }
 
