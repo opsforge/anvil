@@ -34,3 +34,9 @@
       required: true
       default: "http://pastebin.com/raw/???????"
       type: "string"
+    - variable: BTPASS
+      description: "Butterfly will need a password, specify one here"
+      label: "Butterfly terminal password"
+      required: true
+      default: "password"
+      type: "string"
