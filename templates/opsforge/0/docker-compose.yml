@@ -3,7 +3,7 @@ services:
   opsforge:
     restart: always
     image: opsforge/opsforge:latest
-    command: /bin/zsh -c "/root/entrypoint.sh ${FULLNAME} ${MYEMAIL} ${PASTEBINURL} ${GITURLWITHCRED}"
+    command: /bin/zsh -c "/root/entrypoint.sh ${FULLNAME} ${MYEMAIL} ${PASTEBINURL} ${GITURLWITHCRED} ${BTPASS}"
     ports:
       - ${BUTTERFLYPORT}:5757
     volumes:
