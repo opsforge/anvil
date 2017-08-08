@@ -32,7 +32,7 @@ RUN cd /tmp && \
     if [ -f "chefdk.deb" ]; then \
       dpkg -i chefdk.deb ; \
     else \
-      curl -L -o chefdk.deb 'https://packages.chef.io/stable/ubuntu/12.04/chefdk_1.0.3-1_amd64.deb' ; \
+      curl -L -o chefdk.deb 'https://packages.chef.io/files/stable/chefdk/2.0.28/ubuntu/16.04/chefdk_2.0.28-1_amd64.deb' ; \
       dpkg -i chefdk.deb \
     ;fi && \
     curl -L -o cfinst.deb https://cli.run.pivotal.io/stable\?release\=debian64\&source\=github && \

@@ -26,7 +26,7 @@ sudo yum install -y python-pip &>/dev/null
 echo "Done"
 
 echo -n ">>> Installing and configuring Docker Engine..."
-sudo /bin/zsh -c 'curl https://releases.rancher.com/install-docker/1.12.sh | sh' &>/dev/null
+sudo /bin/zsh -c 'curl https://releases.rancher.com/install-docker/17.06.sh | sh' &>/dev/null
 sudo usermod -aG docker vagrant &>/dev/null
 sudo systemctl enable docker.service &>/dev/null
 sudo systemctl daemon-reload &>/dev/null
