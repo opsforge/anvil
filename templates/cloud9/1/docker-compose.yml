@@ -1,0 +1,20 @@
+cloud9:
+  restart: always
+  privileged: true
+  command: "-a : "
+  image: sapk/cloud9
+  # ports:
+  #   - ${PORT}:8181
+  volumes:
+    - /home/vagrant/repos:/workspace
+    
+pass:
+  restart: always
+  links:
+    - cloud9:web
+  environment:
+    FORWARD_PORT: ${PORT}
+    HTPASSWD: "${USERPASS}"
+  ports:
+    - ${PORT}:80
+  image: beevelop/nginx-basic-auth

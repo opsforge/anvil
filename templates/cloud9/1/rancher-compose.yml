@@ -1,0 +1,18 @@
+.catalog:
+  name: "cloud9"
+  version: v2.0
+  description: "Full-fledged browser IDE"
+  minimum_rancher_version: v1.5.0
+  questions:
+    - variable: PORT
+      description: "IDE browser access"
+      label: "Open port on localhost"
+      required: true
+      default: "8181"
+      type: "int"
+    - variable: USERPASS
+      description: "Username and password with : separation for basic auth"
+      label: "Basic auth creds"
+      required: true
+      default: "george:CW6ZaLAnWKQCmy28i4"
+      type: string
