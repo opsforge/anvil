@@ -14,5 +14,5 @@
       description: "Username and password with : separation for basic auth"
       label: "Basic auth creds"
       required: true
-      default: "george:CW6ZaLAnWKQCmy28i4"
+      default: "opsforge:$apr1$hOEScewU$XfVqLCjCuVIaiD1BU5.HJ."
       type: string
