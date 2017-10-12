@@ -1,0 +1,42 @@
+.catalog:
+  name: "ELK"
+  version: v5.6.3
+  description: "ELK minimal dev stack"
+  minimum_rancher_version: v1.5.0
+  questions:
+    - variable: ES_PORT1
+      description: "elasticsearch access port 1"
+      label: "Required ES port"
+      required: true
+      default: "9200"
+      type: "int"
+    - variable: ES_PORT2
+      description: "elasticsearch access port 2"
+      label: "Required ES port"
+      required: true
+      default: "9300"
+      type: "int"
+    - variable: es_data
+      description: "elasticsearch data folder"
+      label: "ES data storage"
+      required: true
+      default: "es_data"
+      type: "string"
+    - variable: LS_PORT
+      description: "logstash access port"
+      label: "Required LS port"
+      required: true
+      default: "5000"
+      type: "int"
+    - variable: ls_conf
+      description: "logstash config file folder"
+      label: "LS config folder"
+      required: true
+      default: "ls_conf"
+      type: "string"
+    - variable: KIB_PORT
+      description: "kibana access port"
+      label: "Required KIB port"
+      required: true
+      default: "5601"
+      type: "int"
