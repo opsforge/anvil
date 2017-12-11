@@ -1,0 +1,152 @@
+version: '3'
+services:
+
+  ## OPSFORGE CONTAINER
+  opsforge:
+    restart: always
+    image: opsforge/opsforge:latest
+    # Replace the values in the following command with your values. Further details in the readme.
+    command: /bin/zsh -c "/root/entrypoint.sh MY.NAME myemail@mymailer.com https://pastebin.com/raw/38bgGTK7 https://username:password@bitbucket.org/myproject/myshell-source.git MySecureTerminalPassword"
+    ports:
+      - 8001:5757
+    volumes:
+      - ./repos:/root/repos
+    network_mode: bridge
+
+  ## CLOUD9 CONTAINERS
+  cloud9:
+    restart: always
+    privileged: true
+    command: "-a : "
+    image: sapk/cloud9
+    volumes:
+      - ./repos:/workspace
+  pass:
+    restart: always
+    links:
+      - cloud9:web
+    environment:
+      FORWARD_PORT: 8181
+      # Add htpassword here: http://www.htaccesstools.com/htpasswd-generator/ (example below is username=username password=password)
+      HTPASSWD: "username:$apr1$3X/xufbq$xBqXarJxuOD0AMXJ4OYin."
+    ports:
+      - 8181:80
+    image: beevelop/nginx-basic-auth
+
+  ## SHIPYARD CONTAINERS
+  rethinkdb:
+    hostname: rethinkdb
+    image: rethinkdb
+    # The volume section is optional and can be commented out if persisting the shipyard configuration is not a concern (the path is also optional)
+    volumes:
+      - ./shipyard_db:/data
+    networks:
+      - shipyard
+  discovery:
+    depends_on:
+      - rethinkdb
+    hostname: shipyard-discovery
+    image: microbox/etcd
+    command:  -name discovery
+    expose:
+      - "4001"
+      - "7001"
+    networks:
+      - shipyard
+  proxy:
+    depends_on:
+      - discovery
+    hostname: proxy
+    image: opsforge/docker-proxy:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 2375:2375
+    environment:
+      - PORT=2375
+    networks:
+      - shipyard
+  swarm-manager:
+    depends_on:
+      - proxy
+    expose:
+      - "3375"
+    image: swarm:latest
+    command: manage --host tcp://0.0.0.0:3375 etcd://discovery:4001
+    networks:
+      shipyard:
+        aliases:
+          - swarm
+          - swarm-manager
+  swarm-agent:
+    depends_on:
+      - swarm-manager
+    image: swarm:latest
+    command: join --addr proxy:2375 etcd://discovery:4001
+    networks:
+      shipyard:
+        aliases:
+          - swarm-agent
+  controller:
+    depends_on:
+      - swarm-agent
+    hostname: shipyard-controller
+    image: opsforge/shipyard:latest
+    command: |
+      server
+      -d tcp://swarm:3375
+    ports:
+      - 8080:8080
+    networks:
+      - shipyard
+
+  ## GRAYLOG 2 CONTAINERS
+  mongodb:
+    image: mongo:3
+    network_mode: bridge
+  # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/docker.html
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.1
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=localhost
+      - network.host=0.0.0.0
+      # Disable X-Pack security: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/security-settings.html#general-security-settings
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+    network_mode: bridge
+  # Graylog: https://hub.docker.com/r/graylog/graylog/
+  graylog:
+    image: graylog/graylog:2.3.0-1
+    environment:
+      # CHANGE ME!
+      - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
+      # Password: admin
+      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      - GRAYLOG_WEB_ENDPOINT_URI=http://127.0.0.1:9000/api
+    links:
+      - mongodb:mongo
+      - elasticsearch
+    depends_on:
+      - mongodb
+      - elasticsearch
+    ports:
+      # Graylog web interface and REST API
+      - 9000:9000
+      # Syslog TCP
+      - 514:514
+      # Syslog UDP
+      - 514:514/udp
+      # GELF TCP
+      - 12201:12201
+      # GELF UDP
+      - 12201:12201/udp
+    network_mode: bridge
+
+networks:
+  shipyard:
