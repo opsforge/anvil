@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 services:
 
   ## OPSFORGE CONTAINER
@@ -27,8 +27,8 @@ services:
       - cloud9:web
     environment:
       FORWARD_PORT: 8181
-      # Add htpassword here: http://www.htaccesstools.com/htpasswd-generator/ (example below is username=username password=password)
-      HTPASSWD: "username:$apr1$3X/xufbq$xBqXarJxuOD0AMXJ4OYin."
+      # Add htpassword here: http://www.htaccesstools.com/htpasswd-generator/ (example below is username=username password=password) - make sure to escape $ signs with $$
+      HTPASSWD: 'username:$$apr1$$3X/xufbq$$xBqXarJxuOD0AMXJ4OYin.'
     ports:
       - 8181:80
     image: beevelop/nginx-basic-auth
