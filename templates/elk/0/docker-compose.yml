@@ -3,9 +3,9 @@ services:
   es:
     restart: always
     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.3
-    ports:
-      - ${ES_PORT1}:9200
-      - ${ES_PORT2}:9300
+    expose:
+      - 9200
+      - 9300
     volumes:
       - /home/vagrant/${es_data}:/usr/share/elasticsearch/data
     ulimits:
