@@ -1,9 +1,0 @@
-cloud9:
-  restart: always
-  privileged: true
-  command: "-a : "
-  image: sapk/cloud9
-  ports:
-    - ${PORT}:8181
-  volumes:
-    - /home/vagrant/repos:/workspace

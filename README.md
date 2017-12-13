@@ -17,7 +17,7 @@ The opsforge stack v2 is an all-in-one development solution, that aims to delive
 | --- | --- | --- |
 | `opsforge/opsforge` [![](https://images.microbadger.com/badges/version/opsforge/opsforge.svg)](https://microbadger.com/images/opsforge/opsforge "Docker Hub link")  [![](https://images.microbadger.com/badges/image/opsforge/opsforge.svg)](https://microbadger.com/images/opsforge/opsforge "Get your own image badge on microbadger.com") | Build health: [ ![Codeship Status for opsforgeio/opsforge](https://app.codeship.com/projects/f6cc7410-98b5-0134-62d3-3e4a8d26d28a/status?branch=master)](https://app.codeship.com/projects/187530) Code health: [![Issue Count](https://codeclimate.com/github/opsforgeio/opsforge/badges/issue_count.svg)](https://codeclimate.com/github/opsforgeio/opsforge) | Ubuntu container with tools and shell  |
 | `opsforge/shipyard` [![](https://images.microbadger.com/badges/image/opsforge/shipyard.svg)](https://microbadger.com/images/opsforge/shipyard "Get your own image badge on microbadger.com") | CI/CD: [![CircleCI](https://circleci.com/gh/opsforgeio/shipyard/tree/master.svg?style=svg)](https://circleci.com/gh/opsforgeio/shipyard/tree/master) | Docker Engine and Swarm controller, API and Web UI |
-| `graylog/graylog` [![](https://images.microbadger.com/badges/image/graylog/graylog.svg)](https://microbadger.com/images/graylog/graylog "Get your own image badge on microbadger.com") | N/A | Logging and collector engine |
+| `docker.elastic.co/logstash/logstash:6.0.1` `docker.elastic.co/elasticsearch/elasticsearch:6.0.1` `docker.elastic.co/kibana/kibana:6.0.1` | N/A | Logging and collector engine |
 
 Components:
 
@@ -26,7 +26,7 @@ Components:
 | Cloud9 IDE | Development interface | Browser window |
 | opsbox | ZSH (shell) through Butterfly, pre-built CLIs and git control | Browser window or Docker shell |
 | shipyard | Docker engine access and container access | Browser window or API |
-| Graylog 2 | Audit and shell logging (optional) | Browser window or API |
+| ELK | Audit and shell logging (optional) | Browser window or API |
 
 # Deployment
 
@@ -51,4 +51,5 @@ To delete the stack, simply `cd` into your project folder and type `docker-compo
 | Cloud9 | http://localhost:8181 |
 | opsbox (ZSH) | http://localhost:8001 |
 | shipyard | http://localhost:8080 |
-| graylog | http://localhost:9000 |
+| Kibana | http://localhost:5601 |
+| Logstash (for sending logs and metrics in) | http://localhost:5000 |

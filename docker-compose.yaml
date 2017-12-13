@@ -35,6 +35,7 @@ services:
 
   ## SHIPYARD CONTAINERS
   rethinkdb:
+    restart: always
     hostname: rethinkdb
     image: rethinkdb
     # The volume section is optional and can be commented out if persisting the shipyard configuration is not a concern (the path is also optional)
@@ -43,6 +44,7 @@ services:
     networks:
       - shipyard
   discovery:
+    restart: always
     depends_on:
       - rethinkdb
     hostname: shipyard-discovery
@@ -54,6 +56,7 @@ services:
     networks:
       - shipyard
   proxy:
+    restart: always
     depends_on:
       - discovery
     hostname: proxy
@@ -67,6 +70,7 @@ services:
     networks:
       - shipyard
   swarm-manager:
+    restart: always
     depends_on:
       - proxy
     expose:
@@ -79,6 +83,7 @@ services:
           - swarm
           - swarm-manager
   swarm-agent:
+    restart: always
     depends_on:
       - swarm-manager
     image: swarm:latest
@@ -88,6 +93,7 @@ services:
         aliases:
           - swarm-agent
   controller:
+    restart: always
     depends_on:
       - swarm-agent
     hostname: shipyard-controller
@@ -100,53 +106,48 @@ services:
     networks:
       - shipyard
 
-  ## GRAYLOG 2 CONTAINERS
-  mongodb:
-    image: mongo:3
-    network_mode: bridge
-  # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/docker.html
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.1
-    environment:
-      - http.host=0.0.0.0
-      - transport.host=localhost
-      - network.host=0.0.0.0
-      # Disable X-Pack security: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/security-settings.html#general-security-settings
-      - xpack.security.enabled=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    mem_limit: 1g
-    network_mode: bridge
-  # Graylog: https://hub.docker.com/r/graylog/graylog/
-  graylog:
-    image: graylog/graylog:2.3.0-1
-    environment:
-      # CHANGE ME!
-      - GRAYLOG_PASSWORD_SECRET=somepasswordpepper
-      # Password: admin
-      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
-      - GRAYLOG_WEB_ENDPOINT_URI=http://127.0.0.1:9000/api
-    links:
-      - mongodb:mongo
-      - elasticsearch
-    depends_on:
-      - mongodb
-      - elasticsearch
-    ports:
-      # Graylog web interface and REST API
-      - 9000:9000
-      # Syslog TCP
-      - 514:514
-      # Syslog UDP
-      - 514:514/udp
-      # GELF TCP
-      - 12201:12201
-      # GELF UDP
-      - 12201:12201/udp
-    network_mode: bridge
+    # ELK CONTAINERS
+    es:
+      restart: always
+      image: docker.elastic.co/elasticsearch/elasticsearch:6.0.1
+      expose:
+        - 9200
+        - 9300
+      volumes:
+        - ./es_data:/usr/share/elasticsearch/data
+      ulimits:
+        memlock:
+          soft: -1
+          hard: -1
+      mem_limit: 1g
+      environment:
+        - discovery.type=single-node
+        - network.host=0.0.0.0
+        - discovery.zen.minimum_master_nodes=1
+        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      networks:
+        es:
+          aliases:
+            - elasticsearch
+    ls:
+      restart: always
+      image: docker.elastic.co/logstash/logstash:6.0.1
+      ports:
+        - 5000:5000
+      # environment:
+      #   - LOG_LEVEL=debug
+      volumes:
+        - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      networks:
+        - es
+    kib:
+      restart: always
+      image: docker.elastic.co/kibana/kibana:6.0.1
+      ports:
+        - 5601:5601
+      networks:
+        - es
 
-networks:
-  shipyard:
+  networks:
+    shipyard:
+    es:
