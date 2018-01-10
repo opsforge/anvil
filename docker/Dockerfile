@@ -21,7 +21,7 @@ RUN apt-get update && \
 
 # Tooling
 
-RUN apt-get -y install git zsh curl wget nano telnet dnsutils jq python-pip python-dev libsqlite3-dev libffi-dev libssl-dev netcat sshpass inetutils-ping && \
+RUN apt-get -y install git zsh curl wget nano telnet dnsutils jq python-pip python-dev libsqlite3-dev libffi-dev libssl-dev netcat sshpass inetutils-ping vim && \
     pip install awscli && \
     apt-get clean
 
@@ -32,7 +32,7 @@ RUN cd /tmp && \
     if [ -f "chefdk.deb" ]; then \
       dpkg -i chefdk.deb ; \
     else \
-      curl -L -o chefdk.deb 'https://packages.chef.io/files/stable/chefdk/2.0.28/ubuntu/16.04/chefdk_2.0.28-1_amd64.deb' ; \
+      curl -L -o chefdk.deb 'https://packages.chef.io/files/stable/chefdk/2.4.17/ubuntu/16.04/chefdk_2.4.17-1_amd64.deb' ; \
       dpkg -i chefdk.deb \
     ;fi && \
     curl -L -o cfinst.deb https://cli.run.pivotal.io/stable\?release\=debian64\&source\=github && \
