@@ -9,5 +9,5 @@ else
   exit 1
 fi
 echo "Initiating DockerHub builds..."
-curl --data build=true -X POST 'https://registry.hub.docker.com/u/opsforge/opsforge/trigger/ee46ac63-b47a-4fc6-a9e2-6718d52ebda7/'
+curl --data build=true -X POST 'https://registry.hub.docker.com/u/opsforge/anvil/trigger/5f7336f8-319d-4938-8634-61726c32f4d5/'
 echo "DockerHub build triggered..."

@@ -1,6 +1,0 @@
-name: pandorafms
-description: |
-  Monitoring tool
-version: 1.0-opsforge.io
-category: MONITORING
-license: "Copyright (C) 2017 George Svachulay - Apache 2.0 License"

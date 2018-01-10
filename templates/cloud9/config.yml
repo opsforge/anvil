@@ -1,6 +1,0 @@
-name: cloud9
-description: |
-  IDE for lots of languages and much more
-version: 1.0-opsforge.io
-category: DEVOPS
-license: "Copyright (C) 2017 George Svachulay - Apache 2.0 License"

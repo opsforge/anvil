@@ -1,6 +1,0 @@
-name: elk
-description: |
-  noSQL database for logging and monitoring
-version: 0.1-opsforge.io
-category: MONITORING
-license: "Copyright (C) 2017 George Svachulay - Apache 2.0 License"
