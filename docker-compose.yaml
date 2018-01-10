@@ -64,12 +64,16 @@ services:
     privileged: true
     command: "-a : "
     image: sapk/cloud9
+    expose:
+      - 8181
     volumes:
       - ./repos:/workspace
-  pass:
+    networks:
+      cloud9:
+        aliases:
+          - web
+  cloud9pass:
     restart: always
-    links:
-      - cloud9:web
     environment:
       FORWARD_PORT: 8181
       # Add htpassword here: http://www.htaccesstools.com/htpasswd-generator/ (example below is username=username password=password) - make sure to escape $ signs with $$
@@ -77,6 +81,8 @@ services:
     ports:
       - 8181:80
     image: beevelop/nginx-basic-auth
+    networks:
+      - cloud9
 
   ## Portainer (swarm)
   portainer:
@@ -128,11 +134,25 @@ services:
   kib:
     restart: always
     image: docker.elastic.co/kibana/kibana:6.0.1
+    expose:
+      - 5601
+    networks:
+      es:
+        aliases:
+          - web
+  kibpass:
+    restart: always
+    environment:
+      FORWARD_PORT: 5601
+      # Add htpassword here: http://www.htaccesstools.com/htpasswd-generator/ (example below is username=username password=password) - make sure to escape $ signs with $$
+      HTPASSWD: 'username:$$apr1$$3X/xufbq$$xBqXarJxuOD0AMXJ4OYin.'
     ports:
-      - 5601:5601
+      - 5601:80
+    image: beevelop/nginx-basic-auth
     networks:
       - es
 
 networks:
   shipyard:
   es:
+  cloud9:
