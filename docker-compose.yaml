@@ -153,6 +153,7 @@ services:
       - es
 
 networks:
+  guac:
   shipyard:
   es:
   cloud9:
