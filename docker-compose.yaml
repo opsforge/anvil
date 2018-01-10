@@ -1,10 +1,10 @@
 version: '2'
 services:
 
-  ## OPSFORGE CONTAINER
-  opsforge:
+  ## ANVIL CONTAINER
+  anvil:
     restart: always
-    image: opsforge/opsforge:latest
+    image: opsforge/anvil:latest
     # Replace the values in the following command with your values. Further details in the readme.
     command: /bin/zsh -c "/root/entrypoint.sh MY.NAME myemail@mymailer.com https://pastebin.com/raw/38bgGTK7 https://username:password@bitbucket.org/myproject/myshell-source.git MySecureTerminalPassword"
     ports:
