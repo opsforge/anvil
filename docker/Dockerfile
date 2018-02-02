@@ -1,10 +1,10 @@
 # Dockerfile of opsforge.io DevUtils for PaaS use - Copyright (C) 2017 George Svachulay - Apache 2.0 License
 
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 MAINTAINER opsforge.io
 LABEL name="opsforge"
-LABEL version="1.1.0"
+LABEL version="1.2.0"
 
 EXPOSE 5757
 
