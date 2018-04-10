@@ -5,7 +5,7 @@ echo ""
 echo "Running Dockerfile lints..."
 echo ""
 
-find -name "Dockerfile" > out.tmp
+find $(pwd) -name Dockerfile > out.tmper
 
 failed="false"
 
@@ -13,7 +13,7 @@ while read lints; do
   echo ""
   echo ">>> Testing Dockerfile in $lints."
 
-  dockerfile_lint -f $lints #-r ./specs/extended_env.yaml
+  dockerfile_lint -f $lints #-r $(pwd)/specs/extended_env.yaml
 
   if [[ $? -eq 0 ]] ; then
     echo ""
