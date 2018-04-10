@@ -75,7 +75,7 @@ RUN cd /tmp && \
 RUN cd /tmp && \
     wget -q https://storage.googleapis.com/golang/getgo/installer_linux && \
     chmod +x installer_linux && \
-    ./installer_linux && \
+    bash ./installer_linux && \
     rm -rf /tmp/*
 
 # Install NodeJS
