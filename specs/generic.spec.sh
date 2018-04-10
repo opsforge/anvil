@@ -5,7 +5,7 @@ echo ""
 echo "Running Dockerfile lints..."
 echo ""
 
-find $(pwd) -name Dockerfile > out.tmp
+find $(pwd) -name "Dockerfile" > out.tmp
 
 failed="false"
 
