@@ -13,7 +13,7 @@ while read lints; do
   echo ""
   echo ">>> Testing Dockerfile in $lints."
 
-  dockerfile_lint -f $lints -r ./specs/extended_env.yaml
+  dockerfile_lint -f $lints #-r ./specs/extended_env.yaml
 
   if [[ $? -eq 0 ]] ; then
     echo ""
