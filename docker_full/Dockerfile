@@ -72,11 +72,9 @@ RUN cd /tmp && \
 
 # Install GO
 
-RUN cd /tmp && \
-    wget -q https://storage.googleapis.com/golang/getgo/installer_linux && \
-    chmod +x installer_linux && \
-    bash ./installer_linux && \
-    rm -rf /tmp/*
+RUN apt-get update && \
+    apt-get install -y golang && \
+    apt-get clean
 
 # Install NodeJS
 
@@ -87,13 +85,14 @@ RUN apt-get update && \
 # Install Ruby stable
 
 RUN cd /tmp && \
+    curl -sSL https://rvm.io/mpapis.asc | gpg --import - && \
     curl -sSL https://get.rvm.io | bash -s stable --ruby && \
     rm -rf /tmp/*
 
 # Install CF CLI using pivotal method
 
 RUN cd /tmp && \
-    curl -L -o cf.deb https://cli.run.pivotal.io/stable?release=debian64&source=github && \
+    curl -L -o cf.deb "https://cli.run.pivotal.io/stable?release=debian64&source=github" && \
     dpkg -i cf.deb && \
     rm -rf /tmp/*
 
@@ -125,10 +124,16 @@ RUN rm -rf ~/.git && \
     rm -rf ~/.oh-my-zsh && \
     bash -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
     git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
+COPY .zshrc /root/.zshrc
+RUN chmod 0755 /root/.zshrc
+
+# Set up butterfly SASS and powerlevel9k theme
 
 COPY style.sass /etc/butterfly/themes/powerlevel9k/style.sass
 RUN mkdir -p /etc/butterfly/themes/powerlevel9k && \
     chmod 0755 /etc/butterfly/themes/powerlevel9k/style.sass
+
+# Config entrypoint
 
 COPY entrypoint.sh /root/entrypoint.sh
 RUN chmod 0755 /root/entrypoint.sh

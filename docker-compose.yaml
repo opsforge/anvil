@@ -4,9 +4,9 @@ services:
   ## ANVIL CONTAINER
   anvil:
     restart: always
-    image: opsforge/anvil:latest
+    image: opsforge/anvil:full
     # Replace the values in the following command with your values. Further details in the readme.
-    command: /bin/zsh -c "/root/entrypoint.sh MY.NAME myemail@mymailer.com https://pastebin.com/raw/38bgGTK7 https://username:password@bitbucket.org/myproject/myshell-source.git MySecureTerminalPassword"
+    command: /bin/zsh -c "/root/entrypoint.sh --fullname='MY.NAME' --myemail='myemail@mymailer.com' --pastebinurl='https://pastebin.com/raw/38bgGTK7' --btpass='MySecureTerminalPassword'" #--giturlwithcred='https://username:password@bitbucket.org/myproject/myshell-source.git'
     ports:
       - 8001:5757
     expose:
@@ -18,45 +18,45 @@ services:
     networks:
       - guac
 
-  ## GUAC
-  guacd:
-    restart: always
-    image: guacamole/guacd
-    networks:
-      - guac
-    expose:
-      - 4822
-  guacamole:
-    depends_on:
-      - guacsql
-      - guacd
-    restart: always
-    image: guacamole/guacamole
-    environment:
-      GUACD_HOSTNAME: 'guacd'
-      MYSQL_HOSTNAME: 'guacsql'
-      MYSQL_DATABASE: 'guacamole_db'
-      MYSQL_USER: 'guac'
-      # If you want to change this password, you'll need to change the counterpart in the guacinit.sql file first and re-run DB init (delete the guacsql folder and restart the stack)
-      MYSQL_PASSWORD: '7L6gH5WcxyXQdL5189'
-    ports:
-      - 8002:8080
-    networks:
-      - guac
-  guacsql:
-    restart: always
-    image: mariadb:10.3
-    environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: 'true'
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-    networks:
-      guac:
-        aliases:
-          - mysql
-    volumes:
-      - ./guacsql:/var/lib/mysql
-      # The belove file is an init sql file that has to be supplied in the folder, otherwise the mysql init will crash
-      - ./guacinit.sql:/docker-entrypoint-initdb.d/guacinit.sql
+  # ## GUAC
+  # guacd:
+  #   restart: always
+  #   image: guacamole/guacd
+  #   networks:
+  #     - guac
+  #   expose:
+  #     - 4822
+  # guacamole:
+  #   depends_on:
+  #     - guacsql
+  #     - guacd
+  #   restart: always
+  #   image: guacamole/guacamole
+  #   environment:
+  #     GUACD_HOSTNAME: 'guacd'
+  #     MYSQL_HOSTNAME: 'guacsql'
+  #     MYSQL_DATABASE: 'guacamole_db'
+  #     MYSQL_USER: 'guac'
+  #     # If you want to change this password, you'll need to change the counterpart in the guacinit.sql file first and re-run DB init (delete the guacsql folder and restart the stack)
+  #     MYSQL_PASSWORD: '7L6gH5WcxyXQdL5189'
+  #   ports:
+  #     - 8002:8080
+  #   networks:
+  #     - guac
+  # guacsql:
+  #   restart: always
+  #   image: mariadb:10.3
+  #   environment:
+  #     MYSQL_RANDOM_ROOT_PASSWORD: 'true'
+  #     MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+  #   networks:
+  #     guac:
+  #       aliases:
+  #         - mysql
+  #   volumes:
+  #     - ./guacsql:/var/lib/mysql
+  #     # The belove file is an init sql file that has to be supplied in the folder, otherwise the mysql init will crash
+  #     - ./guacinit.sql:/docker-entrypoint-initdb.d/guacinit.sql
 
   ## CLOUD9 CONTAINERS
   cloud9:
@@ -97,63 +97,63 @@ services:
       - 9000:9000
     network_mode: bridge
 
-  # ELK CONTAINERS
-  es:
-    restart: always
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.0.1
-    expose:
-      - 9200
-      - 9300
-    volumes:
-      - ./es_data:/usr/share/elasticsearch/data
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    mem_limit: 1g
-    environment:
-      - discovery.type=single-node
-      - network.host=0.0.0.0
-      - discovery.zen.minimum_master_nodes=1
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    networks:
-      es:
-        aliases:
-          - elasticsearch
-  ls:
-    restart: always
-    image: docker.elastic.co/logstash/logstash:6.0.1
-    ports:
-      - 5000:5000
-    # environment:
-    #   - LOG_LEVEL=debug
-    volumes:
-      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
-    networks:
-      - es
-  kib:
-    restart: always
-    image: docker.elastic.co/kibana/kibana:6.0.1
-    expose:
-      - 5601
-    networks:
-      es:
-        aliases:
-          - web
-  kibpass:
-    restart: always
-    environment:
-      FORWARD_PORT: 5601
-      # Add htpassword here: http://www.htaccesstools.com/htpasswd-generator/ (example below is username=username password=password) - make sure to escape $ signs with $$
-      HTPASSWD: 'username:$$apr1$$3X/xufbq$$xBqXarJxuOD0AMXJ4OYin.'
-    ports:
-      - 5601:80
-    image: beevelop/nginx-basic-auth
-    networks:
-      - es
+  # # ELK CONTAINERS
+  # es:
+  #   restart: always
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:6.0.1
+  #   expose:
+  #     - 9200
+  #     - 9300
+  #   volumes:
+  #     - ./es_data:/usr/share/elasticsearch/data
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   mem_limit: 1g
+  #   environment:
+  #     - discovery.type=single-node
+  #     - network.host=0.0.0.0
+  #     - discovery.zen.minimum_master_nodes=1
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   networks:
+  #     es:
+  #       aliases:
+  #         - elasticsearch
+  # ls:
+  #   restart: always
+  #   image: docker.elastic.co/logstash/logstash:6.0.1
+  #   ports:
+  #     - 5000:5000
+  #   # environment:
+  #   #   - LOG_LEVEL=debug
+  #   volumes:
+  #     - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+  #   networks:
+  #     - es
+  # kib:
+  #   restart: always
+  #   image: docker.elastic.co/kibana/kibana:6.0.1
+  #   expose:
+  #     - 5601
+  #   networks:
+  #     es:
+  #       aliases:
+  #         - web
+  # kibpass:
+  #   restart: always
+  #   environment:
+  #     FORWARD_PORT: 5601
+  #     # Add htpassword here: http://www.htaccesstools.com/htpasswd-generator/ (example below is username=username password=password) - make sure to escape $ signs with $$
+  #     HTPASSWD: 'username:$$apr1$$3X/xufbq$$xBqXarJxuOD0AMXJ4OYin.'
+  #   ports:
+  #     - 5601:80
+  #   image: beevelop/nginx-basic-auth
+  #   networks:
+  #     - es
 
 networks:
   guac:
-  shipyard:
-  es:
+  # shipyard:
+  # es:
   cloud9:

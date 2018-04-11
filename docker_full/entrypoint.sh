@@ -1,14 +1,34 @@
 #!/bin/zsh
 
-FULLNAME=$1
-MYEMAIL=$2
-PASTEBINURL=$3
-GITURLWITHCRED=$4
-BTPASS=$5
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --fullname=*)
+      fullname="${1#*=}"
+      ;;
+    --myemail=*)
+      myemail="${1#*=}"
+      ;;
+    --pastebinurl=*)
+      pastebinurl="${1#*=}"
+      ;;
+    --giturlwithcred=*)
+      giturlwithcred="${1#*=}"
+      ;;
+    --btpass=*)
+      btpass="${1#*=}"
+      ;;
+    *)
+      printf "***************************\n"
+      printf "* Error: Invalid argument.*\n"
+      printf "***************************\n"
+      exit 1
+  esac
+  shift
+done
 
-
-# Eval chef in current session
-eval "$(chef shell-init zsh)"
+# ChefDK is temporarily removed
+# # Eval chef in current session
+# eval "$(chef shell-init zsh)"
 
 shellsource() {
   # Set up shellsource with Rancher attributue
@@ -25,7 +45,7 @@ shellsource() {
 }
 
 butterfly-up() {
-  echo "root:${BTPASS:-password}" | chpasswd
+  echo "root:${btpass:-password}" | chpasswd
   butterfly.server.py --host="0.0.0.0" --port=5757 --unsecure
 }
 
@@ -46,6 +66,6 @@ repos() {
 # Actions to be done
 
 cd /root
-shellsource ${FULLNAME} ${MYEMAIL} ${GITURLWITHCRED}
-repos ${PASTEBINURL}
+shellsource ${fullname} ${myemail} ${giturlwithcred}
+repos ${pastebinurl}
 butterfly-up
