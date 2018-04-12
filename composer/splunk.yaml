@@ -1,0 +1,13 @@
+  splunk:
+    hostname: splunklight
+    image: opsforge/splunk-light
+    environment:
+      SPLUNK_START_ARGS: --accept-license --answer-yes
+    volumes:
+      - ./splunk-data:/opt/splunk/etc
+      - ./splunk-config:/opt/splunk/var
+    ports:
+      - "8000:8000"
+      - "1514:1514/udp"
+    networks:
+      - splunk

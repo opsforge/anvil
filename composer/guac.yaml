@@ -1,0 +1,39 @@
+  ## GUAC
+  guacd:
+    restart: always
+    image: guacamole/guacd
+    networks:
+      - guac
+    expose:
+      - 4822
+  guacamole:
+    depends_on:
+      - guacsql
+      - guacd
+    restart: always
+    image: guacamole/guacamole
+    environment:
+      GUACD_HOSTNAME: 'guacd'
+      MYSQL_HOSTNAME: 'guacsql'
+      MYSQL_DATABASE: 'guacamole_db'
+      MYSQL_USER: 'guac'
+      # If you want to change this password, you'll need to change the counterpart in the guacinit.sql file first and re-run DB init (delete the guacsql folder and restart the stack)
+      MYSQL_PASSWORD: '7L6gH5WcxyXQdL5189'
+    ports:
+      - 8002:8080
+    networks:
+      - guac
+  guacsql:
+    restart: always
+    image: mariadb:10.3
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 'true'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    networks:
+      guac:
+        aliases:
+          - mysql
+    volumes:
+      - ./guacsql:/var/lib/mysql
+      # The belove file is an init sql file that has to be supplied in the folder, otherwise the mysql init will crash
+      - ./guacinit.sql:/docker-entrypoint-initdb.d/guacinit.sql

@@ -1,0 +1,34 @@
+  concourse-db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=concourse
+      - POSTGRES_PASSWORD=Standard1
+      - POSTGRES_USER=concourse
+      - PGDATA=/database
+    volumes:
+      - ./concourse-pgdata:/var/lib/postgresql/data
+    networks:
+      concourse:
+        aliases:
+          - concourse-db
+
+  concourse:
+    image: concourse/concourse
+    command: quickstart
+    privileged: true
+    depends_on:
+      - concourse-db
+    ports:
+      - 8003:8080
+    environment:
+      - CONCOURSE_POSTGRES_HOST=concourse-db
+      - CONCOURSE_POSTGRES_USER=concourse
+      - CONCOURSE_POSTGRES_PASSWORD=Standard1
+      - CONCOURSE_POSTGRES_DATABASE=concourse
+      - CONCOURSE_EXTERNAL_URL='https://localhost:8003'
+      - CONCOURSE_BASIC_AUTH_USERNAME=concourse
+      - CONCOURSE_BASIC_AUTH_PASSWORD=Standard1
+      - CONCOURSE_NO_REALLY_I_DONT_WANT_ANY_AUTH=true
+      - CONCOURSE_WORKER_GARDEN_NETWORK
+    networks:
+      - concourse

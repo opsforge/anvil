@@ -2,3 +2,8 @@
 *.log
 repos/*
 shipyard_db/*
+portainer/*
+docker-compose.yaml
+splunk-*
+es_data/*
+guacsql/*

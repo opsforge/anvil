@@ -17,16 +17,18 @@ The opsforge anvil (a renaming of the opsforge stack 2.0) is an all-in-one devel
 | --- | --- | --- |
 | `opsforge/anvil` [![](https://images.microbadger.com/badges/version/opsforge/opsforge.svg)](https://microbadger.com/images/opsforge/opsforge "Docker Hub link")  [![](https://images.microbadger.com/badges/image/opsforge/opsforge.svg)](https://microbadger.com/images/opsforge/opsforge "Get your own image badge on microbadger.com") | Build health: [ ![Codeship Status for opsforgeio/opsforge](https://app.codeship.com/projects/f6cc7410-98b5-0134-62d3-3e4a8d26d28a/status?branch=master)](https://app.codeship.com/projects/187530) Code health: [![Issue Count](https://codeclimate.com/github/opsforgeio/opsforge/badges/issue_count.svg)](https://codeclimate.com/github/opsforgeio/opsforge) | Ubuntu container with tools and shell  |
 | `docker.elastic.co/logstash/logstash:6.0.1` `docker.elastic.co/elasticsearch/elasticsearch:6.0.1` `docker.elastic.co/kibana/kibana:6.0.1` | N/A | Logging and collector engine |
+| `opsforge/splunk-light` [![](https://images.microbadger.com/badges/version/opsforge/splunk-light.svg)](https://microbadger.com/images/opsforge/splunk-light) [![](https://images.microbadger.com/badges/image/opsforge/splunk-light.svg)](https://microbadger.com/images/opsforge/splunk-light) | N/A | Logging and collector engine |
 
 Components:
 
 | Name | Purpose | Accessibility |
 | ---  | ------- | ------------- |
-| Cloud9 IDE | Development interface | Browser window |
-| opsbox | ZSH (shell) through Butterfly, pre-built CLIs and git control | Browser window or Docker shell |
-| Apache Guacamole | Remote desktop, VNC, TTY, etc access (optional) | Browser window |
-| portainer | Docker engine access and container access | Browser window or API |
-| ELK | Audit and shell logging (optional) | Browser window or API |
+| _(plugin)_ Cloud9 IDE | Development interface | Browser window |
+| **anvil** | ZSH (shell) through Butterfly, pre-built CLIs and git control | Browser window or Docker shell |
+| _(plugin)_ Apache Guacamole | Remote desktop, VNC, TTY, etc access (optional) | Browser window |
+| _(plugin)_ portainer | Docker engine access and container access | Browser window or API |
+| _(plugin)_ ELK | Audit and shell logging (optional) | Browser window or API |
+| _(plugin)_ Splunk Light (C) | Audit and shell logging (optional) | Browser window or API |
 
 # Deployment
 
@@ -34,11 +36,20 @@ Components:
 
 It's recommended to create a new folder in the destination directory first. The name of the folder can be anything the OS supports.
 
+### If using ELK
+
 1. `cd` into the folder you created
 2. `mkdir -p ./es_data`
 3. `chmod -R 777 ./es_data`
 
 This will resolve any issues with ownership when the ES container is starting up.
+
+### If using Splunk Light
+
+1. `cd` into the folder you created
+2. `mkdir -p ./splunk-data && touch ./splunk-data/splunk-launch.conf`
+
+This will resolve launch issues with the Splunk Light container.
 
 ## Deploying the stack
 
@@ -56,16 +67,17 @@ To delete the stack, simply `cd` into your project folder and type `docker-compo
 
 | Service | Address |
 | -- | -- |
-| Cloud9 | http://localhost:8181 |
+| Splunk Light | http://localhost:8000 |
 | anvil (core) | http://localhost:8001 |
-| Apache Guacamole | http://localhost:8002/guacamole/ |
+| Cloud9 | http://localhost:8002 |
+| Apache Guacamole | http://localhost:8003/guacamole/ |
 | portainer | http://localhost:9000 |
 | Kibana | http://localhost:5601 |
 | Logstash (for sending logs and metrics in) | http://localhost:5000 |
 
 # Customization
 
-You are free to comment out / add in parts of the docker-compose to disable or remove services on startup. You can apply your changes with a simple `docker-compose -p anvil up -d` on an active deployment.
+You are free to comment out / add in parts of the docker-compose to disable or remove services on startup. You can apply your changes with a simple `docker-compose -p anvil up -d --remove-orphaned` on an active deployment.
 
 You can also make use of portainer on port `9000`. After logging in and connecting in to the local docker engine, you can stop / start / create / remove containers on-demand through the web UI or its API.
 

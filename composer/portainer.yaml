@@ -1,0 +1,12 @@
+  ## Portainer (swarm)
+  portainer:
+    image: portainer/portainer
+    restart: always
+    # >> For SELinux
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./portainer:/data portainer/portainer
+    ports:
+      - 9000:9000
+    network_mode: bridge

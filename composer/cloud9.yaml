@@ -1,0 +1,25 @@
+  ## CLOUD9 CONTAINERS
+  cloud9:
+    restart: always
+    privileged: true
+    command: "-a : "
+    image: sapk/cloud9
+    expose:
+      - 8181
+    volumes:
+      - ./repos:/workspace
+    networks:
+      cloud9:
+        aliases:
+          - web
+  cloud9pass:
+    restart: always
+    environment:
+      FORWARD_PORT: 8181
+      # Add htpassword here: http://www.htaccesstools.com/htpasswd-generator/ (example below is username=username password=password) - make sure to escape $ signs with $$
+      HTPASSWD: 'username:$$apr1$$3X/xufbq$$xBqXarJxuOD0AMXJ4OYin.'
+    ports:
+      - 8181:80
+    image: beevelop/nginx-basic-auth
+    networks:
+      - cloud9
