@@ -64,8 +64,8 @@ RUN cd /tmp && \
 # Install terraform
 
 RUN cd /tmp && \
-    curl -LO https://releases.hashicorp.com/terraform/${TFVER}/terraform_${TFVER}_openbsd_amd64.zip && \
-    unzip terraform_${TFVER}_openbsd_amd64.zip && \
+    curl -LO https://releases.hashicorp.com/terraform/${TFVER}/terraform_${TFVER}_linux_amd64.zip && \
+    unzip terraform_${TFVER}_linux_amd64.zip && \
     chmod +x terraform && \
     mv terraform /usr/local/bin/terraform && \
     rm -rf /tmp/*
@@ -99,7 +99,7 @@ RUN cd /tmp && \
 # Install OM
 
 RUN cd /tmp && \
-    curl -LO https://github.com/pivotal-cf/om/releases/download/$(curl -s https://github.com/pivotal-cf/om/releases/latest | grep tag_name | cut -d '"' -f 4)/om-linux && \
+    curl -LO https://github.com/pivotal-cf/om/releases/download/$(curl -s https://github.com/pivotal-cf/om/releases/latest | sed 's/^.*tag\///' | sed 's/\".*$//')/om-linux && \
     chmod +x om-linux && \
     mv om-linux /usr/local/bin/om
 
@@ -113,7 +113,7 @@ RUN cd /tmp && \
 # Install FLY CLI
 
 RUN cd /tmp && \
-    curl -LO https://github.com/concourse/fly/releases/download/$(curl -s https://github.com/concourse/fly/releases/latest | grep tag_name | cut -d '"' -f 4)/fly_linux_amd64 && \
+    curl -LO https://github.com/concourse/fly/releases/download/$(curl -s https://github.com/concourse/fly/releases/latest | sed 's/^.*tag\///' | sed 's/\".*$//')/fly_linux_amd64 && \
     chmod +x fly_linux_amd64 && \
     mv fly_linux_amd64 /usr/local/bin/fly
 
