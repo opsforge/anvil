@@ -82,6 +82,7 @@ echo "Done"
 
 
 cat ./composer/header.yaml > ./docker-compose.yaml
+cat ./composer/anvil.yaml > ./docker-compose.yaml
 
 for i in $components ; do
   cat ./composer/${i}.yaml >> ./docker-compose.yaml
