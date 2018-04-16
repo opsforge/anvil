@@ -113,7 +113,7 @@ RUN cd /tmp && \
 # Install FLY CLI
 
 RUN cd /tmp && \
-    curl -LO https://github.com/concourse/fly/releases/download/$(curl -s https://github.com/concourse/fly/releases/latest | sed 's/^.*tag\///' | sed 's/\".*$//')/fly_linux_amd64 && \
+    curl -LO https://github.com/concourse/concourse/releases/download/$(curl -s https://github.com/concourse/concourse/releases/latest | sed 's/^.*tag\///' | sed 's/\".*$//')/fly_linux_amd64 && \
     chmod +x fly_linux_amd64 && \
     mv fly_linux_amd64 /usr/local/bin/fly
 
