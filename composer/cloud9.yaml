@@ -15,7 +15,7 @@
   cloud9pass:
     restart: always
     environment:
-      FORWARD_PORT: 8002
+      FORWARD_PORT: 8181
       # Add htpassword here: http://www.htaccesstools.com/htpasswd-generator/ (example below is username=username password=password) - make sure to escape $ signs with $$
       HTPASSWD: 'username:$$apr1$$3X/xufbq$$xBqXarJxuOD0AMXJ4OYin.'
     ports:
