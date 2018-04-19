@@ -8,3 +8,4 @@ splunk-*
 es_data/*
 guacsql/*
 minio/*
+composer/anvil*
