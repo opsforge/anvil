@@ -5,7 +5,7 @@
     command: "-a : "
     image: sapk/cloud9
     expose:
-      - 8002
+      - 8181
     volumes:
       - ./repos:/workspace
     networks:
