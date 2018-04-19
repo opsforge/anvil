@@ -1,0 +1,17 @@
+  ## MINIO CONTAINER
+  minio:
+    restart: always
+    image: minio/minio
+    command: server /data
+    environment:
+      - MINIO_ACCESS_KEY: "AKIAIOSFODNN7EXAMPLE"
+      - MINIO_SECRET_KEY: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+    ports:
+      - 8004:9000
+    expose:
+      - 9000
+    volumes:
+      - ./minio/data:/data
+      - ./minio/config:/root/.minio
+    networks:
+      - concourse

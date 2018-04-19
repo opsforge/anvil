@@ -5,28 +5,25 @@ components=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --cloud9)
-      # cloud9="true"
       components="$components cloud9"
       ;;
     --concourse)
-      # concourse="true"
       components="$components concourse"
       ;;
     --elk)
-      # elk="true"
       components="$components elk"
       ;;
     --guac)
-      # guac="true"
       components="$components guac"
       ;;
     --portainer)
-      # portainer="true"
       components="$components portainer"
       ;;
     --splunk)
-      # splunk="true"
       components="$components splunk"
+      ;;
+    --minio)
+      components="$components minio"
       ;;
     --destroy)
       destroy="true"
