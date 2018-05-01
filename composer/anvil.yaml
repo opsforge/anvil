@@ -1,11 +1,13 @@
   ## ANVIL CONTAINER
   anvil:
     restart: always
-    image: opsforge/anvil:full
+    image: opsforge/anvil
     # Replace the values in the following command with your values. Further details in the readme.
     command: /bin/zsh -c "/root/entrypoint.sh --fullname='MY.NAME' --myemail='myemail@mymailer.com' --pastebinurl='https://pastebin.com/raw/38bgGTK7' --btpass='MySecureTerminalPassword'" #--giturlwithcred='https://username:password@bitbucket.org/myproject/myshell-source.git'
     ports:
       - 8001:5757
+      - 8101:3501
+      - 8102:3502
     expose:
       # These ports are added to make the RDP forwarding work
       - 3501
