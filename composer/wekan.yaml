@@ -1,0 +1,34 @@
+  wekan:
+    image: quay.io/wekan/wekan
+    restart: always
+    ports:
+      - 8005:80
+    environment:
+      - ROOT_URL=http://localhost:8005
+      - MONGO_URL=mongodb://wekandb:27017/wekan
+      - MAIL_URL=smtp://smtp:25/
+      - MAIL_FROM='My Local Wekan <local@wekan.host>'
+    # depends_on:
+    #   - wekandb
+    networks:
+      - wekan
+
+  wekandb:
+    image: mongo:3.2.19
+    restart: always
+    command: mongod --smallfiles --oplogSize 128
+    expose:
+      - 27017
+    volumes:
+      - ./wekan-db:/data/db
+      - ./wekan-db-dump:/dump
+    networks:
+      - wekan
+
+  smtp:
+    image: namshi/smtp
+    restart: always
+    expose:
+      - 25
+    networks:
+      - wekan

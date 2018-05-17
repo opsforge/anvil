@@ -25,6 +25,9 @@ while [ $# -gt 0 ]; do
     --minio)
       components="$components minio"
       ;;
+    --wekan)
+      components="$components wekan"
+      ;;
     --destroy)
       destroy="true"
       ;;
