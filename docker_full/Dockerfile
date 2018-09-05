@@ -123,7 +123,7 @@ RUN rm -rf ~/.git && \
     cd ~ && \
     rm -rf ~/.oh-my-zsh && \
     bash -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
-    git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
+    git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k && \
     cd ~/.oh-my-zsh/custom/themes && \
     wget "https://raw.githubusercontent.com/haribo/omz-haribo-theme/master/haribo.zsh-theme"
 COPY .zshrc /root/.zshrc
