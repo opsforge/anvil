@@ -2,13 +2,13 @@
 
 FROM ubuntu:18.04
 
-ENV VAULTVER="0.10.4"
-ENV TFVER="0.11.7"
-ENV BOSHVER="5.1.1"
+ENV VAULTVER="0.11.0"
+ENV TFVER="0.11.8"
+ENV BOSHVER="5.1.2"
 
 MAINTAINER opsforge.io
 LABEL name="anvil"
-LABEL version="2.0.1"
+LABEL version="2.1.0"
 LABEL type="full"
 
 EXPOSE 5757
@@ -127,11 +127,14 @@ RUN rm -rf ~/.git && \
 COPY .zshrc /root/.zshrc
 RUN chmod 0755 /root/.zshrc
 
-# Set up butterfly SASS and powerlevel9k theme
+# Set up butterfly SASS and powerlevel9k + console themes
 
 COPY style.sass /etc/butterfly/themes/powerlevel9k/style.sass
 RUN mkdir -p /etc/butterfly/themes/powerlevel9k && \
     chmod 0755 /etc/butterfly/themes/powerlevel9k/style.sass
+    
+COPY console /etc/butterfly/themes/console
+RUN chmod -R 0755 /etc/butterfly/themes/console
 
 # Config entrypoint
 
