@@ -37,7 +37,8 @@ RUN pip install awscli && \
     pip install butterfly && \
     pip install aws-shell && \
     pip install boto3 && \
-    pip install tile-generator
+    pip install tile-generator && \
+    pip install docker-compose
 
 # Install KOPS
 
