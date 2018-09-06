@@ -8,7 +8,7 @@ ENV BOSHVER="5.1.2"
 
 MAINTAINER opsforge.io
 LABEL name="anvil"
-LABEL version="2.1.0"
+LABEL version="2.1.1"
 LABEL type="full"
 
 EXPOSE 5757
@@ -27,6 +27,7 @@ RUN apt-get update && \
 # Ubuntu package installs
 
 RUN apt-get -y install git zsh curl wget nano telnet dnsutils jq python-pip python-dev libsqlite3-dev libffi-dev libssl-dev netcat sshpass inetutils-ping vim git-crypt unzip pwgen groff && \
+    curl -fsSL https://get.docker.com | bash && \
     apt-get clean
 
 # PIP package installs
