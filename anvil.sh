@@ -37,9 +37,6 @@ while [ $# -gt 0 ]; do
     --destroy)
       destroy="true"
       ;;
-    --report)
-      report="true"
-      ;;
     *)
       printf "***************************\n"
       printf "* Error: Invalid argument.*\n"
@@ -48,6 +45,17 @@ while [ $# -gt 0 ]; do
   esac
   shift
 done
+
+
+# Configure UI
+
+clear
+COLUMNS=$(tput cols) 
+title="OPSFORGE ANVIL" 
+printf "%*s\n" $(((${#title}+$COLUMNS)/2)) "$title"
+echo "
+
+"
 
 # echo $components
 
@@ -63,12 +71,6 @@ if [ $? -ne 0 ] ; then
   exit 1
 fi
 
-clear
-if echo $report | grep true &>/dev/null ; then
-    docker ps -a --filter name=anvil --format "{{.Names}} listening on {{.Ports}} ----- health: {{.Status}}"
-    exit 0
-fi
-
 if echo $destroy | grep true &>/dev/null ; then
   clear
   echo "Destroy action requested."
@@ -76,7 +78,6 @@ if echo $destroy | grep true &>/dev/null ; then
   exit 0
 fi
 
-clear
 echo "ANViL quickstart: "
 echo "You requested the following components:"
 echo "$components"
