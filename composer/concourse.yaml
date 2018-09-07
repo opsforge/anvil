@@ -1,4 +1,5 @@
   concourse-db:
+    restart: unless-stopped
     image: postgres
     environment:
       - POSTGRES_DB=concourse
@@ -13,7 +14,8 @@
           - concourse-db
 
   concourse:
-    image: concourse/concourse
+    restart: unless-stopped
+    image: concourse/concourse:3.14.1
     command: quickstart
     privileged: true
     depends_on:

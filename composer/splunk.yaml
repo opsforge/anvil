@@ -1,4 +1,5 @@
   splunk:
+    restart: unless-stopped
     hostname: splunklight
     image: opsforge/splunk-light
     environment:

@@ -1,0 +1,56 @@
+  concourse4-db:
+    restart: unless-stopped
+    image: postgres
+    environment:
+      - POSTGRES_DB=concourse
+      - POSTGRES_PASSWORD=Standard1
+      - POSTGRES_USER=concourse
+      - PGDATA=/database
+    volumes:
+      - ./concourse4-pgdata:/var/lib/postgresql/data
+    networks:
+      concourse4:
+        aliases:
+          - concourse-db
+
+  concourse4:
+    restart: unless-stopped
+    image: concourse/concourse:4.0.0
+    command: quickstart
+    privileged: true
+    depends_on:
+      - concourse4-db
+    ports:
+      - 8003:8003
+    environment:
+      - CONCOURSE_POSTGRES_HOST=concourse-db
+      - CONCOURSE_POSTGRES_USER=concourse
+      - CONCOURSE_POSTGRES_PASSWORD=Standard1
+      - CONCOURSE_POSTGRES_DATABASE=concourse
+      - CONCOURSE_EXTERNAL_URL=http://localhost:8003
+      - CONCOURSE_BIND_PORT=8003
+      - CONCOURSE_ADD_LOCAL_USER=concourse:$$2y$$12$$fvPmaXhi5tdbQKhM44RhuuljgkVRyxtJbMYS2RyBfVbJS38862RkC
+      - CONCOURSE_MAIN_TEAM_LOCAL_USER=concourse
+      - CONCOURSE_WORKER_GARDEN_NETWORK
+    networks:
+      concourse4:
+        aliases:
+          - concourse-web
+          - concourse
+
+  # concourse-worker4:
+  #   restart: unless-stopped
+  #   image: concourse/concourse
+  #   command: worker
+  #   privileged: true
+  #   depends_on:
+  #     - concourse-web
+  #   volumes:
+  #     - ./concourse4-keys/worker:/concourse-keys
+  #   environment:
+  #     - CONCOURSE_TSA_HOST=concourse-web:8003
+  #     - CONCOURSE_GARDEN_NETWORK
+  #   networks:
+  #     concourse4:
+  #       aliases:
+  #         - concourse4

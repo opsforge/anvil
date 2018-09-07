@@ -6,4 +6,5 @@ networks:
   cloud9:
   splunk:
   concourse:
+  concourse4:
   wekan:

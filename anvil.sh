@@ -10,6 +10,9 @@ while [ $# -gt 0 ]; do
     --concourse)
       components="$components concourse"
       ;;
+    --concourse4)
+      components="$components concourse4"
+      ;;
     --elk)
       components="$components elk"
       ;;
@@ -28,8 +31,14 @@ while [ $# -gt 0 ]; do
     --wekan)
       components="$components wekan"
       ;;
+    --evala)
+      components="$components evala"
+      ;;
     --destroy)
       destroy="true"
+      ;;
+    --report)
+      report="true"
       ;;
     *)
       printf "***************************\n"
@@ -52,6 +61,12 @@ which docker-compose &>/dev/null
 if [ $? -ne 0 ] ; then
   echo "Missing Docker Compose"
   exit 1
+fi
+
+clear
+if echo $report | grep true &>/dev/null ; then
+    docker ps -a --filter name=anvil --format "{{.Names}} listening on {{.Ports}} ----- health: {{.Status}}"
+    exit 0
 fi
 
 if echo $destroy | grep true &>/dev/null ; then

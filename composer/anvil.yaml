@@ -1,6 +1,7 @@
   ## ANVIL CONTAINER
   anvil:
     restart: always
+    privileged: true
     image: opsforge/anvil
     # Replace the values in the following command with your values. Further details in the readme.
     command: /bin/zsh -c "/root/entrypoint.sh --fullname='MY.NAME' --myemail='myemail@mymailer.com' --pastebinurl='https://pastebin.com/raw/38bgGTK7' --btpass='MySecureTerminalPassword'" #--giturlwithcred='https://username:password@bitbucket.org/myproject/myshell-source.git'
@@ -13,8 +14,10 @@
       - 3501
       - 3502
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
       - ./repos:/root/repos
     networks:
       - guac
       - splunk
+      - concourse4
       - concourse

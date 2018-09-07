@@ -1,0 +1,8 @@
+  ## EVALA DASHBOARD
+  evala:
+    restart: unless-stopped
+    image: opsforge/evala-docker
+    ports:
+      - 9788:9788
+    expose:
+      - 9788
