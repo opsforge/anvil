@@ -21,3 +21,12 @@
       - splunk
       - concourse4
       - concourse
+  deskible:
+    restart: unless-stopped
+    image: opsforge/deskible
+    ports:
+      - 8004:80
+    expose:
+      - 80
+    volumes:
+      - ./deskible:/usr/share/nginx/html
