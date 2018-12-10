@@ -1,4 +1,4 @@
-  concourse4-db:
+  concourse4_db:
     restart: unless-stopped
     image: postgres
     environment:
@@ -15,11 +15,11 @@
 
   concourse4:
     restart: unless-stopped
-    image: concourse/concourse:4.0.0
+    image: concourse/concourse:4.2.2
     command: quickstart
     privileged: true
     depends_on:
-      - concourse4-db
+      - concourse4_db
     ports:
       - 8003:8003
     environment:
