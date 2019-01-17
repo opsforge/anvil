@@ -2,13 +2,13 @@
 
 FROM ubuntu:18.04
 
-ENV VAULTVER="0.11.0"
-ENV TFVER="0.11.8"
-ENV BOSHVER="5.1.2"
+ENV VAULTVER="1.0.2"
+ENV TFVER="0.11.11"
+ENV BOSHVER="5.4.1"
 
 MAINTAINER opsforge.io
 LABEL name="anvil"
-LABEL version="2.1.1"
+LABEL version="2.1.2"
 LABEL type="full"
 
 EXPOSE 5757
