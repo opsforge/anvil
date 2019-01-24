@@ -4,6 +4,7 @@ networks:
   es:
   jswiki:
   cloud9:
+  theia:
   splunk:
   concourse:
   concourse4:

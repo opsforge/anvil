@@ -7,6 +7,9 @@ while [ $# -gt 0 ]; do
     --cloud9)
       components="$components cloud9"
       ;;
+    --theia)
+      components="$components theia"
+      ;;
     --concourse)
       components="$components concourse"
       ;;
@@ -50,8 +53,8 @@ done
 # Configure UI
 
 clear
-COLUMNS=$(tput cols) 
-title="OPSFORGE ANVIL" 
+COLUMNS=$(tput cols)
+title="OPSFORGE ANVIL"
 printf "%*s\n" $(((${#title}+$COLUMNS)/2)) "$title"
 echo "
 
