@@ -1,0 +1,25 @@
+  ## THEIA CONTAINERS
+  theia:
+    restart: always
+    image: theiaide/theia:next
+    # expose:
+    #   - 3000
+    ports:
+      - 8002:3000
+    volumes:
+      - ./repos:/home/project
+    networks:
+      theia:
+        aliases:
+          - web
+  # theiapass:
+  #   restart: always
+  #   environment:
+  #     FORWARD_PORT: 3000
+  #     # Add htpassword here: http://www.htaccesstools.com/htpasswd-generator/ (example below is username=username password=password) - make sure to escape $ signs with $$
+  #     HTPASSWD: 'username:$$apr1$$3X/xufbq$$xBqXarJxuOD0AMXJ4OYin.'
+  #   ports:
+  #     - 8002:80
+  #   image: beevelop/nginx-basic-auth
+  #   networks:
+  #     - theia
