@@ -21,6 +21,7 @@
       - splunk
       - concourse4
       - concourse
+      - consul
   deskible:
     restart: unless-stopped
     image: opsforge/deskible

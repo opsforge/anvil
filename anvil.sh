@@ -13,6 +13,9 @@ while [ $# -gt 0 ]; do
     --concourse4)
       components="$components concourse4"
       ;;
+    --consul)
+      components="$components consul"
+      ;;
     --elk)
       components="$components elk"
       ;;
