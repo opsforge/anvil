@@ -2,13 +2,13 @@
 
 FROM ubuntu:18.04
 
-ENV VAULTVER="0.11.0"
-ENV TFVER="0.11.8"
-ENV BOSHVER="5.1.2"
+ENV VAULTVER="1.0.2"
+ENV TFVER="0.11.11"
+ENV BOSHVER="5.4.1"
 
 MAINTAINER opsforge.io
 LABEL name="anvil"
-LABEL version="2.1.1"
+LABEL version="2.1.2"
 LABEL type="full"
 
 EXPOSE 5757
@@ -88,6 +88,7 @@ RUN apt-get update && \
 
 RUN cd /tmp && \
     curl -sSL https://rvm.io/mpapis.asc | gpg --import - && \
+    curl -sSL https://rvm.io/pkuczynski.asc | gpg --import - && \
     curl -sSL https://get.rvm.io | bash -s stable --ruby && \
     rm -rf /tmp/*
 

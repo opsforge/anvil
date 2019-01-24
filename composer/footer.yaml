@@ -9,3 +9,4 @@ networks:
   concourse:
   concourse4:
   wekan:
+  consul:
