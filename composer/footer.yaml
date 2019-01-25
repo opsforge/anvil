@@ -6,7 +6,6 @@ networks:
   cloud9:
   theia:
   splunk:
-  concourse:
   concourse4:
   wekan:
   consul:

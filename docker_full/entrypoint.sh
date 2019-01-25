@@ -49,6 +49,13 @@ butterfly-up() {
   butterfly.server.py --host="0.0.0.0" --port=5757 --unsecure
 }
 
+# consul-join() {
+#   consul_if=$(getent hosts consul | cut -d ' ' -f 1 | cut -d '.' -f1-2 | cut -d ' ' -f3)
+#   consul_addr=$(ip addr | grep $consul_if | grep inet | sed 's/.*inet.//' | sed 's/\ brd.*//' | sed 's/\/.*//')
+#   mkdir -p /var/log/consul
+#   consul agent -retry-join "consul" -bind=$consul_addr -data-dir=/etc/consul/data -datacenter=opsforge -node=anvil -config-file=/etc/consul.json >> /var/log/consul/output.log &
+# }
+
 repos() {
   curl -fsSL -o /tmp/repos.conf $1
   chmod 0755 /tmp/repos.conf
@@ -66,6 +73,7 @@ repos() {
 # Actions to be done
 
 cd /root
+# consul-join
 shellsource ${fullname} ${myemail} ${giturlwithcred}
 repos ${pastebinurl}
 butterfly-up

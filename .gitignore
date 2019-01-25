@@ -11,3 +11,4 @@ guacsql/*
 minio/*
 wekan-db*
 deskible/*
+consul-data/*

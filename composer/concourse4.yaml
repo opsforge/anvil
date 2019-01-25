@@ -38,19 +38,46 @@
           - concourse-web
           - concourse
 
-  # concourse-worker4:
-  #   restart: unless-stopped
-  #   image: concourse/concourse
-  #   command: worker
-  #   privileged: true
-  #   depends_on:
-  #     - concourse-web
-  #   volumes:
-  #     - ./concourse4-keys/worker:/concourse-keys
-  #   environment:
-  #     - CONCOURSE_TSA_HOST=concourse-web:8003
-  #     - CONCOURSE_GARDEN_NETWORK
-  #   networks:
-  #     concourse4:
-  #       aliases:
-  #         - concourse4
+  ## CONSUL SIDEKICK
+  consul_concourse4:
+    restart: unless-stopped
+    command:
+      - /bin/sh
+      - -c
+      - |
+        cat <<EOF> /etc/consul.json
+        {
+          "services": [
+            {
+              "id": "concourse4_cicd",
+              "name": "Concourse 4 CI/CD",
+              "tags": ["CICD"],
+              "address": "localhost",
+              "meta": {
+                "meta": "Continous Integration and Deployment tool from Pivotal"
+              },
+              "port": 8003,
+              "checks": [
+                {
+                  "id": "cicd_check",
+                  "name": "CI/CD TCP check",
+                  "tcp": "concourse4:8003",
+                  "interval": "10s",
+                  "timeout": "3s"
+                }
+              ],
+              "weights": {
+                "passing": 1,
+                "warning": 1
+              }
+            }
+          ]
+        }
+        EOF
+        consul_if=$$(getent hosts consul | cut -d ' ' -f 1 | cut -d '.' -f1-2 | cut -d ' ' -f3)
+        consul_addr=$$(ip addr | grep $$consul_if | grep inet | sed 's/.*inet.//' | sed 's/\ brd.*//' | sed 's/\/.*//')
+        consul agent -retry-join "consul" -bind=$$consul_addr -data-dir=/etc/consul/data -datacenter=opsforge -node=concourse4 -config-file=/etc/consul.json
+    image: consul
+    networks:
+      - consul
+      - concourse4

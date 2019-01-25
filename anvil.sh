@@ -10,14 +10,8 @@ while [ $# -gt 0 ]; do
     --theia)
       components="$components theia"
       ;;
-    --concourse)
-      components="$components concourse"
-      ;;
     --concourse4)
       components="$components concourse4"
-      ;;
-    --consul)
-      components="$components consul"
       ;;
     --elk)
       components="$components elk"

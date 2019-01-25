@@ -5,6 +5,7 @@ FROM ubuntu:18.04
 ENV VAULTVER="1.0.2"
 ENV TFVER="0.11.11"
 ENV BOSHVER="5.4.1"
+ENV CONSULVER="1.4.1"
 
 MAINTAINER opsforge.io
 LABEL name="anvil"
@@ -26,7 +27,7 @@ RUN apt-get update && \
 
 # Ubuntu package installs
 
-RUN apt-get -y install git zsh curl wget nano telnet dnsutils jq python-pip python-dev libsqlite3-dev libffi-dev libssl-dev netcat sshpass inetutils-ping vim git-crypt unzip pwgen groff && \
+RUN apt-get -y install git zsh curl wget nano telnet dnsutils jq python-pip python-dev libsqlite3-dev libffi-dev libssl-dev netcat iproute2 sshpass inetutils-ping vim git-crypt unzip pwgen groff && \
     curl -fsSL https://get.docker.com | bash && \
     apt-get clean
 
@@ -70,6 +71,14 @@ RUN cd /tmp && \
     unzip terraform_${TFVER}_linux_amd64.zip && \
     chmod +x terraform && \
     mv terraform /usr/local/bin/terraform && \
+    rm -rf /tmp/*
+
+# Install Consul
+RUN cd /tmp && \
+    wget "https://releases.hashicorp.com/consul/${CONSULVER}/consul_${CONSULVER}_linux_amd64.zip" && \
+    unzip consul_* && \
+    chmod +x consul && \
+    mv consul /usr/local/bin/ && \
     rm -rf /tmp/*
 
 # Install GO
@@ -137,7 +146,7 @@ RUN chmod 0755 /root/.zshrc
 COPY style.sass /etc/butterfly/themes/powerlevel9k/style.sass
 RUN mkdir -p /etc/butterfly/themes/powerlevel9k && \
     chmod 0755 /etc/butterfly/themes/powerlevel9k/style.sass
-    
+
 COPY console /etc/butterfly/themes/console
 RUN chmod -R 0755 /etc/butterfly/themes/console
 
@@ -145,6 +154,11 @@ RUN chmod -R 0755 /etc/butterfly/themes/console
 
 COPY entrypoint.sh /root/entrypoint.sh
 RUN chmod 0755 /root/entrypoint.sh
+
+# Config consul.json
+
+# COPY consul.json /etc/consul.json
+# RUN chmod 0755 /etc/consul.json
 
 SHELL ["/bin/zsh", "-c"]
 CMD ["/root/entrypoint.sh"]

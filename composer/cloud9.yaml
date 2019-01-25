@@ -23,3 +23,46 @@
     image: beevelop/nginx-basic-auth
     networks:
       - cloud9
+  ## CONSUL SIDEKICK
+  consul_cloud9:
+    restart: unless-stopped
+    command:
+      - /bin/sh
+      - -c
+      - |
+        cat <<EOF> /etc/consul.json
+        {
+          "services": [
+            {
+              "id": "cloud9_ide",
+              "name": "Cloud9 IDE",
+              "tags": ["IDE"],
+              "address": "localhost",
+              "meta": {
+                "meta": "Use an IDE from a browser"
+              },
+              "port": 8002,
+              "checks": [
+                {
+                  "id": "ide_check",
+                  "name": "IDE TCP check",
+                  "tcp": "cloud9:8181",
+                  "interval": "10s",
+                  "timeout": "3s"
+                }
+              ],
+              "weights": {
+                "passing": 1,
+                "warning": 1
+              }
+            }
+          ]
+        }
+        EOF
+        consul_if=$$(getent hosts consul | cut -d ' ' -f 1 | cut -d '.' -f1-2 | cut -d ' ' -f3)
+        consul_addr=$$(ip addr | grep $$consul_if | grep inet | sed 's/.*inet.//' | sed 's/\ brd.*//' | sed 's/\/.*//')
+        consul agent -retry-join "consul" -bind=$$consul_addr -data-dir=/etc/consul/data -datacenter=opsforge -node=cloud9 -config-file=/etc/consul.json
+    image: consul
+    networks:
+      - consul
+      - cloud9

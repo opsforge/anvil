@@ -1,5 +1,7 @@
   ## ANVIL CONTAINER
   anvil:
+    depends_on:
+      - consul
     restart: always
     privileged: true
     image: opsforge/anvil
@@ -20,14 +22,118 @@
       - guac
       - splunk
       - concourse4
-      - concourse
       - consul
-  deskible:
+  ## CONSUL
+  consul:
     restart: unless-stopped
-    image: opsforge/deskible
-    ports:
-      - 8004:80
+    command: consul agent -server -ui -bootstrap-expect=1 -data-dir=/consul/data -bind=0.0.0.0 -client=0.0.0.0 -datacenter=opsforge -node=consul_master
+    image: consul
+    environment:
+      - 'CONSUL_LOCAL_CONFIG={"skip_leave_on_interrupt": true}'
     expose:
-      - 80
-    volumes:
-      - ./deskible:/usr/share/nginx/html
+      - 8600
+      - 8500
+      - 8300
+    ports:
+      - 8500:8500
+    networks:
+      - consul
+  # deskible:
+  #   restart: unless-stopped
+  #   image: opsforge/deskible
+  #   ports:
+  #     - 8004:80
+  #   expose:
+  #     - 80
+  #   volumes:
+  #     - ./deskible:/usr/share/nginx/html
+
+
+  ## CONSUL SIDEKICK
+  consul_anvil:
+    restart: unless-stopped
+    command:
+      - /bin/sh
+      - -c
+      - |
+        cat <<EOF> /etc/consul.json
+        {
+          "services": [
+            {
+              "id": "anvil_shell",
+              "name": "ANViL SHELL",
+              "tags": ["anvil","linux shell"],
+              "address": "localhost",
+              "meta": {
+                "meta": "Access anvil from a browser"
+              },
+              "port": 8001,
+              "checks": [
+                {
+                  "id": "shell_check",
+                  "name": "Remote shell TCP check",
+                  "tcp": "anvil:5757",
+                  "interval": "10s",
+                  "timeout": "3s"
+                }
+              ],
+              "weights": {
+                "passing": 1,
+                "warning": 1
+              }
+            },
+            {
+              "id": "anvil_rdp_fw_1",
+              "name": "ANViL RDP Forwarder 1",
+              "tags": ["anvil","RDP"],
+              "address": "localhost",
+              "meta": {
+                "meta": "Used with SSH tunnels via Guacamole"
+              },
+              "port": 8101,
+              "checks": [
+                {
+                  "id": "rdp_check_1",
+                  "name": "RDP TCP check on 3501",
+                  "tcp": "anvil:3501",
+                  "interval": "10s",
+                  "timeout": "3s"
+                }
+              ],
+              "weights": {
+                "passing": 1,
+                "warning": 1
+              }
+            },
+            {
+              "id": "anvil_rdp_fw_2",
+              "name": "ANViL RDP Forwarder 2",
+              "tags": ["anvil","RDP"],
+              "address": "localhost",
+              "meta": {
+                "meta": "Used with SSH tunnels via Guacamole"
+              },
+              "port": 8102,
+              "checks": [
+                {
+                  "id": "rdp_check_2",
+                  "name": "RDP TCP check on 3502",
+                  "tcp": "anvil:3502",
+                  "interval": "10s",
+                  "timeout": "3s"
+                }
+              ],
+              "weights": {
+                "passing": 1,
+                "warning": 1
+              }
+            }
+          ]
+        }
+        EOF
+        consul_if=$$(getent hosts consul | cut -d ' ' -f 1 | cut -d '.' -f1-2 | cut -d ' ' -f3)
+        consul_addr=$$(ip addr | grep $$consul_if | grep inet | sed 's/.*inet.//' | sed 's/\ brd.*//' | sed 's/\/.*//')
+        consul agent -retry-join "consul" -bind=$$consul_addr -data-dir=/etc/consul/data -datacenter=opsforge -node=anvil -config-file=/etc/consul.json
+    image: consul
+    networks:
+      - consul
