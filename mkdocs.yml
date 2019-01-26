@@ -1,0 +1,18 @@
+site_name: opsforge anvil
+repo_url: https://github.com/opsforge/anvil
+site_description: Documentation for opsforge ANViL
+site_author: George Svachulay
+copyright: 'Copyright @ 2019 - opsforge'
+
+nav:
+- Home: 'index.md'
+- About: 
+  - Us: 'about.md'
+  - License: 'license.md'
+  
+theme:
+  name: readthedocs
+  highlightjs: true
+  hljs_languages:
+    - yaml
+    - rust
