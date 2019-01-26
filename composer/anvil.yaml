@@ -60,18 +60,18 @@
         {
           "services": [
             {
-              "id": "anvil_shell",
-              "name": "ANViL SHELL",
+              "id": "anvil_shell_1",
+              "name": "anvil_web_shell",
               "tags": ["anvil","linux shell"],
               "address": "localhost",
               "meta": {
-                "meta": "Access anvil from a browser"
+                "meta": "access anvil from a browser"
               },
               "port": 8001,
               "checks": [
                 {
                   "id": "shell_check",
-                  "name": "Remote shell TCP check",
+                  "name": "remote shell tcp check",
                   "tcp": "anvil:5757",
                   "interval": "10s",
                   "timeout": "3s"
@@ -83,18 +83,18 @@
               }
             },
             {
-              "id": "anvil_rdp_fw_1",
-              "name": "ANViL RDP Forwarder 1",
-              "tags": ["anvil","RDP"],
-              "address": "localhost",
+              "id": "anvil_tcp_fw_1",
+              "name": "anvil_tcp_forwarder_socket_1",
+              "tags": ["anvil","tcp forwarding"],
+              "address": "anvil",
               "meta": {
-                "meta": "Used with SSH tunnels via Guacamole"
+                "meta": "used with ssh tunnels in guacamole or for regular port forwarding"
               },
-              "port": 8101,
+              "port": 3501,
               "checks": [
                 {
                   "id": "rdp_check_1",
-                  "name": "RDP TCP check on 3501",
+                  "name": "tcp check on port 3501",
                   "tcp": "anvil:3501",
                   "interval": "10s",
                   "timeout": "3s"
@@ -106,18 +106,28 @@
               }
             },
             {
-              "id": "anvil_rdp_fw_2",
-              "name": "ANViL RDP Forwarder 2",
-              "tags": ["anvil","RDP"],
+              "id": "anvil_tcp_fw_on_host_1",
+              "name": "anvil_tcp_forwarder_socket_on_host1",
+              "tags": ["anvil","tcp forwarding"],
               "address": "localhost",
               "meta": {
-                "meta": "Used with SSH tunnels via Guacamole"
+                "meta": "used on the host machine to access the port forwarding"
               },
-              "port": 8102,
+              "port": 8101
+            },
+            {
+              "id": "anvil_tcp_fw_2",
+              "name": "anvil_tcp_forwarder_socket_2",
+              "tags": ["anvil","tcp forwarding"],
+              "address": "anvil",
+              "meta": {
+                "meta": "used with ssh tunnels in guacamole or for regular port forwarding"
+              },
+              "port": 3501,
               "checks": [
                 {
                   "id": "rdp_check_2",
-                  "name": "RDP TCP check on 3502",
+                  "name": "tcp check on port 3502",
                   "tcp": "anvil:3502",
                   "interval": "10s",
                   "timeout": "3s"
@@ -127,6 +137,16 @@
                 "passing": 1,
                 "warning": 1
               }
+            },
+            {
+              "id": "anvil_tcp_fw_on_host_2",
+              "name": "anvil_tcp_forwarder_socket_on_host2",
+              "tags": ["anvil","tcp forwarding"],
+              "address": "localhost",
+              "meta": {
+                "meta": "used on the host machine to access the port forwarding"
+              },
+              "port": 8102
             }
           ]
         }

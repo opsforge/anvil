@@ -49,18 +49,18 @@
         {
           "services": [
             {
-              "id": "concourse4_cicd",
-              "name": "Concourse 4 CI/CD",
-              "tags": ["CICD"],
+              "id": "concourse4_cicd_1",
+              "name": "concourse_4_cicd",
+              "tags": ["CICD","automation"],
               "address": "localhost",
               "meta": {
-                "meta": "Continous Integration and Deployment tool from Pivotal"
+                "meta": "continous integration and deployment tool from pivotal"
               },
               "port": 8003,
               "checks": [
                 {
-                  "id": "cicd_check",
-                  "name": "CI/CD TCP check",
+                  "id": "cicd_tcp_check_1",
+                  "name": "ci/cd tcp check",
                   "tcp": "concourse4:8003",
                   "interval": "10s",
                   "timeout": "3s"

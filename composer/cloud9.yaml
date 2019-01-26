@@ -34,19 +34,19 @@
         {
           "services": [
             {
-              "id": "cloud9_ide",
-              "name": "Cloud9 IDE",
+              "id": "cloud9_ide_1",
+              "name": "cloud9_browser_ide",
               "tags": ["IDE"],
               "address": "localhost",
               "meta": {
-                "meta": "Use an IDE from a browser"
+                "meta": "use a fully featured ide from a browser"
               },
               "port": 8002,
               "checks": [
                 {
-                  "id": "ide_check",
-                  "name": "IDE TCP check",
-                  "tcp": "cloud9:8181",
+                  "id": "ide_tcp_check_1",
+                  "name": "ide tcp check",
+                  "tcp": "cloud9pass:80",
                   "interval": "10s",
                   "timeout": "3s"
                 }
