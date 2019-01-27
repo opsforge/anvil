@@ -61,10 +61,6 @@
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../../../overview/platforms/">Supported Platforms</a>
-                </li>
-                <li class="">
-                    
     <a class="" href="../../../overview/functionality/">Functionality</a>
                 </li>
     </ul>
@@ -256,7 +252,22 @@
           <div role="main">
             <div class="section">
               
-                
+                <p>You will need Python PIP installed so if you don't have that, follow https://pip.pypa.io/en/stable/installing/ or use <code>brew</code> to install it.</p>
+<ol>
+<li>Follow https://docs.docker.com/docker-for-mac/install/ to install docker on MacOS (recommended sizes are 64GB disk, 2 cpus, at least 2GB ram, 1GB swap)</li>
+<li>Open your terminal</li>
+<li>Type <code>pip install docker-compose</code> and press Enter</li>
+<li>Open the ANViL git repo on https://github.com/opsforge/anvil</li>
+<li>If you have GIT installed on your Mac, clone the project</li>
+<li>If you don't have GIT, download in a ZIP and extract to your preferred location</li>
+<li>Either way, in your terminal <code>cd</code> into the folder you have ANViL in</li>
+<li>Use the bootstrapper to start up the stack with the following command: <code>./anvil.sh</code></li>
+</ol>
+<p>That's the install done.</p>
+<p>You can stop and terminate ANViL containers any time using <code>./anvil.sh --destroy</code> from the ANViL project folder.</p>
+<p>Some ANViL containers persist data on the host using mounts, this is so that you can see / back-up / restore / delete the data they keep easily
+without having to deal with Docker volumes. If you are using the project in GIT mode and are making commits, these are excluded by the
+<code>.gitignore</code> file by default. If for some reason you want to keep them in GIT (not one to judge), you can comment out the ignores.</p>
               
             </div>
           </div>
