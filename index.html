@@ -58,6 +58,9 @@
     <li class="toctree-l2"><a href="#summary-guidelines">Summary / Guidelines</a></li>
     
 
+    <li class="toctree-l2"><a href="#architecture">Architecture</a></li>
+    
+
     </ul>
 	    </li>
           
@@ -172,6 +175,10 @@
                 </li>
                 <li class="">
                     
+    <a class="" href="addons/portainer/">Portainer</a>
+                </li>
+                <li class="">
+                    
     <a class="" href="addons/splunk/">Splunk</a>
                 </li>
                 <li class="">
@@ -266,6 +273,33 @@ most popular tools, but it doesn't stop there.</p>
 <li>platform and infrastructure agnostic</li>
 <li>can run on localhost and AWS the same way</li>
 </ul>
+<h1 id="architecture">Architecture</h1>
+<p>ANViL runs on top of the Community Edition of Docker Engine. It can also run on Docker EE, although it's not required. It's also able to run on Kubernetes, however there are limitations in K8S
+related to disk mounting that have some impact on the functionality, so it's not officially supported.</p>
+<p>The project uses a simple shell script as a CLI to manage the required components. The shell script interacts with the docker engine of the host using the <code>docker-compose</code> Python library.
+This library is widely adopted and popular so extensive documentation is available for it, making the addition and editing of addons easier. Using compose, it stands up docker containers
+running the ANViL ecosystem.</p>
+<p>The minimum configuration is running <code>ANViL</code> and <code>Consul</code>. The addons are optional, but some of them are strongly recommended for optimal experience, like the <code>Cloud9</code> IDE.</p>
+<p>All adopted services will be registered in service discovery within Consul. It's a free Hashicorp product that provides the aforementioned service discovery along with health checking
+the services. It's useful to give a birds-eye view from all running services within ANViL, but it's also helpful to find URLs or to code deeper automation mechanisms between services within
+ANViL.</p>
+<p>As mentioned, ANViL runs on Docker Engine. This pertains, that whatever can run Docker Engine, can in turn run Docker. Natively supported are:</p>
+<ul>
+<li>MacOS (preferred)</li>
+<li>Linux (just as good, but less desktop tools are available)</li>
+<li>AWS (using ECS or a Linux EC2 instance)</li>
+<li>Azure</li>
+<li>GCP</li>
+<li>..etc</li>
+</ul>
+<p>The constraint for native support is to be able to run Docker Engine.</p>
+<p>There's also a compatibility mode available using Vagrant. It moves the platform abstraction one layer below and instead requiring the ability to run Docker natively on the host, it creates
+a VM on the host that can run Docker. The reason why this isn't the preferred / optimal usage is because the maintenance and understanding the VM requires. There's also the factor of the
+resource locks the VM receives from the host instead of sharing the resources. However this mode enables engineers to run ANViL 'behind enemy lines' so to speak, whereas anything that has
+the ability to run VT-d / VT-x or equivalent becomes a viable platform (including legacy OSes). Using Vagrant ensures that wherever Vagrant can run on whichever virtualization product,
+the UX will be the same. It's also a lot quicker to stand up the VM using Vagrant.</p>
+<p>Here's an overview of the architecture:</p>
+<p><img alt="anvil" src="resources/img/anvil_arch.png" /></p>
               
             </div>
           </div>
@@ -318,5 +352,5 @@ most popular tools, but it doesn't stop there.</p>
 
 <!--
 MkDocs version : 1.0.4
-Build Date UTC : 2019-01-26 23:34:13
+Build Date UTC : 2019-01-27 00:27:05
 -->
