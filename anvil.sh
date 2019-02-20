@@ -4,6 +4,9 @@ components=""
 
 while [ $# -gt 0 ]; do
   case "$1" in
+    --vault)
+      components="$components vault"
+      ;;
     --cloud9)
       components="$components cloud9"
       ;;

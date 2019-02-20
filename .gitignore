@@ -12,3 +12,4 @@ minio/*
 wekan-db*
 deskible/*
 consul-data/*
+vault_*
