@@ -1,7 +1,6 @@
   ## VAULT CONTAINER
 
-  # mkdir -p ./vault_certs
-  # openssl req -nodes -x509 -newkey rsa:2048 -keyout ./vault_certs/vault.key -out ./vault_certs/vault.pem -days 365 -subj "/C=GB/ST=Scotland/L=Edinburgh/O=opsforge/OU=OPS/CN=localhost/emailAddress=nope@nope.com"
+  # mkdir -p ./vault_certs && openssl req -nodes -x509 -newkey rsa:2048 -keyout ./vault_certs/vault.key -out ./vault_certs/vault.pem -days 365 -subj "/C=GB/ST=Scotland/L=Edinburgh/O=opsforge/OU=OPS/CN=localhost/emailAddress=nope@nope.com"
 
   vault:
     cap_add:
