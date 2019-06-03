@@ -37,6 +37,9 @@ while [ $# -gt 0 ]; do
     --evala)
       components="$components evala"
       ;;
+    --ansible)
+      components="$components ansible"
+      ;;
     --destroy)
       destroy="true"
       ;;

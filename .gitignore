@@ -13,3 +13,5 @@ wekan-db*
 deskible/*
 consul-data/*
 vault_*
+ansible/*
+*.tgz

@@ -23,6 +23,7 @@
       - splunk
       - concourse4
       - consul
+      - ansible
   ## CONSUL
   consul:
     restart: unless-stopped
