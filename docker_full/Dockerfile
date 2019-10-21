@@ -36,9 +36,7 @@ RUN apt-get -y install git zsh curl wget nano telnet dnsutils jq python-pip pyth
 RUN pip install awscli && \
     pip install libsass && \
     pip install butterfly && \
-    pip install aws-shell && \
     pip install boto3 && \
-    pip install tile-generator && \
     pip install docker-compose
 
 # Install KOPS
