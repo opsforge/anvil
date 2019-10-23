@@ -40,6 +40,9 @@ while [ $# -gt 0 ]; do
     --ansible)
       components="$components ansible"
       ;;
+    --tyk)
+      components="$components tyk"
+      ;;
     --destroy)
       destroy="true"
       ;;

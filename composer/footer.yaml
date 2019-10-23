@@ -10,3 +10,4 @@ networks:
   wekan:
   consul:
   ansible:
+  tyk:
