@@ -46,7 +46,7 @@
                 {
                   "id": "api_tcp_check_1",
                   "name": "api tcp check",
-                  "tcp": "tyk:8080",
+                  "tcp": "tyk_gateway:8080",
                   "interval": "10s",
                   "timeout": "3s"
                 }
