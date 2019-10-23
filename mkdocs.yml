@@ -2,12 +2,43 @@ site_name: opsforge anvil
 repo_url: https://github.com/opsforge/anvil
 site_description: Documentation for opsforge ANViL
 site_author: George Svachulay
-copyright: 'Copyright @ 2019 - opsforge'
+copyright: 'opsforge © 2019'
 
 nav:
 - Home: 'index.md'
+- Overview:
+  # - 'Supported Platforms': 'overview/platforms.md'
+  - Functionality: 'overview/functionality.md'
+- 'Getting Started':
+  - Installation:
+    - MacOS: 'getting-started/installation/macos.md'
+    - Windows: 'getting-started/installation/windows.md'
+    - Linux: 'getting-started/installation/linux.md'
+    - AWS: 'getting-started/installation/aws.md'
+  - 'ANViL Bootstrapper':
+    - 'How-to': 'getting-started/anvil-bootstrapper/bootstrapper_howto.md'
+    - 'Service Management': 'getting-started/anvil-bootstrapper/service_management.md'
+    - 'Consul integration': 'getting-started/anvil-bootstrapper/consul_integration.md'
+- Features:
+  - 'Remote Shell': 'anvil-features/remote_shell.md'
+  - 'Shell Source': 'anvil-features/shell_source.md'
+  - 'anvil Tools': 'anvil-features/anvil_tools.md'
+  - 'Port Forwarding': 'anvil-features/port_forwarding.md'
+  - 'Service Discovery': 'anvil-features/service_discovery.md'
+  - Logging: 'anvil-features/logging.md'
+- Addons:
+  - 'Cloud9 IDE': 'addons/cloud9.md'
+  - 'Consul': 'addons/consul.md'
+  - 'Concourse 4': 'addons/concourse4.md'
+  - Portainer: 'addons/portainer.md'
+  - Splunk: 'addons/splunk.md'
+  - ELK: 'addons/elk.md'
+  - Guacamole: 'addons/guac.md'
+  - Wekand: 'addons/wekan.md'
+  - Theia: 'addons/theia.md'
+  - Deskible: 'addons/deskible.md'
 - About: 
-  - Us: 'about.md'
+  - 'About Us': 'about.md'
   - License: 'license.md'
   
 theme:
