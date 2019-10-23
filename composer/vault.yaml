@@ -1,0 +1,62 @@
+  ## VAULT CONTAINER
+
+  # mkdir -p ./vault_certs && openssl req -nodes -x509 -newkey rsa:2048 -keyout ./vault_certs/vault.key -out ./vault_certs/vault.pem -days 365 -subj "/C=GB/ST=Scotland/L=Edinburgh/O=opsforge/OU=OPS/CN=localhost/emailAddress=nope@nope.com"
+
+  vault:
+    cap_add:
+      - IPC_LOCK
+    image: vault
+    ports:
+      - 8443:8443
+    environment:
+      - 'VAULT_DEV_ROOT_TOKEN=ChangeThisVaultToken'
+      - 'VAULT_LOCAL_CONFIG={"backend": {"file": {"path": "/vault/file"}}, "default_lease_ttl": "168h", "max_lease_ttl": "720h", "listener": {"tcp": {"address": "0.0.0.0:8443", "tls_cert_file": "/certs/vault.pem", "tls_key_file": "/certs/vault.key"}}}'
+    volumes:
+      - ./vault_logs:/vault/logs
+      - ./vault_data:/vault/file
+      - ./vault_certs:/certs
+    restart: unless-stopped
+    networks:
+      - consul
+  ## CONSUL SIDEKICK
+  consul_vault:
+    restart: unless-stopped
+    command:
+      - /bin/sh
+      - -c
+      - |
+        cat <<EOF> /etc/consul.json
+        {
+          "services": [
+            {
+              "id": "vault_api_1",
+              "name": "vault_ui_and_api",
+              "tags": ["Secret Management"],
+              "address": "https://localhost",
+              "meta": {
+                "meta": "Access the Vault UI and API"
+              },
+              "port": 8443,
+              "checks": [
+                {
+                  "id": "vault_tcp_check_1",
+                  "name": "vault tcp check",
+                  "tcp": "vault:8443",
+                  "interval": "10s",
+                  "timeout": "3s"
+                }
+              ],
+              "weights": {
+                "passing": 1,
+                "warning": 1
+              }
+            }
+          ]
+        }
+        EOF
+        consul_if=$$(getent hosts consul | cut -d ' ' -f 1 | cut -d '.' -f1-2 | cut -d ' ' -f3)
+        consul_addr=$$(ip addr | grep $$consul_if | grep inet | sed 's/.*inet.//' | sed 's/\ brd.*//' | sed 's/\/.*//')
+        consul agent -retry-join "consul" -bind=$$consul_addr -data-dir=/etc/consul/data -datacenter=opsforge -node=vault -config-file=/etc/consul.json
+    image: consul
+    networks:
+      - consul

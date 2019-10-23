@@ -1,0 +1,126 @@
+
+  ansible_web:
+    image: ansible/awx_web:4.0.0
+    container_name: awx_web
+    depends_on:
+      - ansible_rabbitmq
+      - ansible_memcached
+      - ansible_postgres
+    ports:
+      - "8053:8053"
+      - "8008:8052"
+    hostname: awxweb
+    user: root
+    restart: unless-stopped
+    volumes:
+      - "./ansible_config/SECRET_KEY:/etc/tower/SECRET_KEY"
+      - "./ansible_config/environment.sh:/etc/tower/conf.d/environment.sh"
+      - "./ansible_config/credentials.py:/etc/tower/conf.d/credentials.py"
+      - "./ansible/projects:/var/lib/awx/projects:rw"
+    networks:
+      ansible:
+        aliases:
+          - web
+
+  ansible_task:
+    image: ansible/awx_task:4.0.0
+    container_name: awx_task
+    depends_on:
+      - ansible_rabbitmq
+      - ansible_memcached
+      - ansible_web
+      - ansible_postgres
+    hostname: awx
+    user: root
+    restart: unless-stopped
+    volumes:
+      - "./ansible_config/SECRET_KEY:/etc/tower/SECRET_KEY"
+      - "./ansible_config/environment.sh:/etc/tower/conf.d/environment.sh"
+      - "./ansible_config/credentials.py:/etc/tower/conf.d/credentials.py"
+      - "./ansible/projects:/var/lib/awx/projects:rw"
+    networks:
+      ansible:
+        aliases:
+          - tasks
+
+  ansible_rabbitmq:
+    image: ansible/awx_rabbitmq:3.7.4
+    container_name: awx_rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_VHOST: awx
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_ERLANG_COOKIE: cookiemonster
+    networks:
+      ansible:
+        aliases:
+          - rabbitmq
+
+  ansible_memcached:
+    image: memcached:alpine
+    container_name: awx_memcached
+    restart: unless-stopped
+    networks:
+      ansible:
+        aliases:
+          - memcached
+
+  ansible_postgres:
+    image: postgres:9.6
+    container_name: awx_postgres
+    restart: unless-stopped
+    volumes:
+      - ./ansible/sql:/var/lib/postgresql/data:Z
+    environment:
+      POSTGRES_USER: awx
+      POSTGRES_PASSWORD: awxpass
+      POSTGRES_DB: awx
+      PGDATA: /var/lib/postgresql/data/pgdata
+    networks:
+      ansible:
+        aliases:
+          - postgres
+
+  ## CONSUL SIDEKICK
+  consul_ansible:
+    restart: unless-stopped
+    command:
+      - /bin/sh
+      - -c
+      - |
+        cat <<EOF> /etc/consul.json
+        {
+          "services": [
+            {
+              "id": "ansible_1",
+              "name": "anvil_ui_and_api",
+              "tags": ["ansible","configmgmt"],
+              "address": "localhost",
+              "meta": {
+                "meta": "access ansible tower"
+              },
+              "port": 8008,
+              "checks": [
+                {
+                  "id": "tcp_check",
+                  "name": "remote shell tcp check",
+                  "tcp": "ansible_web:8008",
+                  "interval": "10s",
+                  "timeout": "3s"
+                }
+              ],
+              "weights": {
+                "passing": 1,
+                "warning": 1
+              }
+            }
+          ]
+        }
+        EOF
+        consul_if=$$(getent hosts consul | cut -d ' ' -f 1 | cut -d '.' -f1-2 | cut -d ' ' -f3)
+        consul_addr=$$(ip addr | grep $$consul_if | grep inet | sed 's/.*inet.//' | sed 's/\ brd.*//' | sed 's/\/.*//')
+        consul agent -retry-join "consul" -bind=$$consul_addr -data-dir=/etc/consul/data -datacenter=opsforge -node=ansible -config-file=/etc/consul.json
+    image: consul
+    networks:
+      - consul

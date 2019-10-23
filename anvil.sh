@@ -4,6 +4,9 @@ components=""
 
 while [ $# -gt 0 ]; do
   case "$1" in
+    --vault)
+      components="$components vault"
+      ;;
     --cloud9)
       components="$components cloud9"
       ;;
@@ -33,6 +36,9 @@ while [ $# -gt 0 ]; do
       ;;
     --evala)
       components="$components evala"
+      ;;
+    --ansible)
+      components="$components ansible"
       ;;
     --destroy)
       destroy="true"
