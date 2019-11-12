@@ -56,18 +56,20 @@ butterfly-up() {
 #   consul agent -retry-join "consul" -bind=$consul_addr -data-dir=/etc/consul/data -datacenter=opsforge -node=anvil -config-file=/etc/consul.json >> /var/log/consul/output.log &
 # }
 
-repos() {
+repos() {  
+  if [ $1 ]; then
   curl -fsSL -o /tmp/repos.conf $1
-  chmod 0755 /tmp/repos.conf
+    chmod 0755 /tmp/repos.conf
 
-  cd ~/repos
+    cd ~/repos
 
-  echo "Cloning repos, please wait..."
-  while read repox; do
-    echo ">>> Retrieving $repox repo."
-    git clone $repox &>/dev/null
-    echo ">>> Done."
-  done </tmp/repos.conf
+    echo "Cloning repos, please wait..."
+    while read repox; do
+      echo ">>> Retrieving $repox repo."
+      git clone $repox &>/dev/null
+      echo ">>> Done."
+    done </tmp/repos.conf
+  fi
 }
 
 # Actions to be done
