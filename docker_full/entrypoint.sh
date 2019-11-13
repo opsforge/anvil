@@ -17,6 +17,9 @@ while [ $# -gt 0 ]; do
     --btpass=*)
       btpass="${1#*=}"
       ;;
+    --shell=*)
+      shell_set="${1#*=}"
+      ;;
     *)
       printf "***************************\n"
       printf "* Error: Invalid argument.*\n"
@@ -72,10 +75,17 @@ repos() {
   fi
 }
 
+change_shell() {
+  if [ $1 ]; then
+    chsh root -s "/bin/$1"
+  fi
+}
+
 # Actions to be done
 
 cd /root
 # consul-join
 shellsource ${fullname} ${myemail} ${giturlwithcred}
 repos ${pastebinurl}
+change_shell ${shell_set}
 butterfly-up
