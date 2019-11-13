@@ -1,6 +1,6 @@
 # Dockerfile of opsforge.io DevUtils for PaaS use - Copyright (C) 2017 George Svachulay - Apache 2.0 License
 
-FROM ubuntu:18.04
+FROM opsforge/anvil:lite
 
 ENV VAULTVER="1.1.2"
 ENV TFVER="0.11.14"
@@ -8,35 +8,21 @@ ENV BOSHVER="5.5.1"
 ENV CONSULVER="1.5.1"
 
 MAINTAINER opsforge.io
-LABEL name="anvil"
-LABEL version="2.1.3"
 LABEL type="full"
-
-EXPOSE 5757
-
-VOLUME /root/repos
 
 # OS fixes and additions
 
 USER root
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install zip language-pack-en -y && \
-    locale-gen en_GB.UTF-8 && \
-    apt-get clean
 
 # Ubuntu package installs
 
-RUN apt-get -y install git zsh curl wget nano telnet dnsutils jq python-pip python-dev libsqlite3-dev libffi-dev libssl-dev netcat iproute2 sshpass inetutils-ping vim git-crypt unzip pwgen groff && \
+RUN apt-get update && \
     curl -fsSL https://get.docker.com | bash && \
     apt-get clean
 
 # PIP package installs
 
-RUN pip install awscli && \
-    pip install libsass && \
-    pip install butterfly && \
-    pip install boto3 && \
+RUN pip install boto3 && \
     pip install docker-compose
 
 # Install KOPS
@@ -126,37 +112,3 @@ RUN cd /tmp && \
     curl -LO https://github.com/concourse/concourse/releases/download/$(curl -s https://github.com/concourse/concourse/releases/latest | sed 's/^.*tag\///' | sed 's/\".*$//')/fly_linux_amd64 && \
     chmod +x fly_linux_amd64 && \
     mv fly_linux_amd64 /usr/local/bin/fly
-
-# ZSH setup and terminal broadcasting
-
-RUN rm -rf ~/.git && \
-    cd ~ && \
-    rm -rf ~/.oh-my-zsh && \
-    bash -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
-    git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k && \
-    cd ~/.oh-my-zsh/custom/themes && \
-    wget "https://raw.githubusercontent.com/haribo/omz-haribo-theme/master/haribo.zsh-theme"
-COPY .zshrc /root/.zshrc
-RUN chmod 0755 /root/.zshrc
-
-# Set up butterfly SASS and powerlevel9k + console themes
-
-COPY style.sass /etc/butterfly/themes/powerlevel9k/style.sass
-RUN mkdir -p /etc/butterfly/themes/powerlevel9k && \
-    chmod 0755 /etc/butterfly/themes/powerlevel9k/style.sass
-
-COPY console /etc/butterfly/themes/console
-RUN chmod -R 0755 /etc/butterfly/themes/console
-
-# Config entrypoint
-
-COPY entrypoint.sh /root/entrypoint.sh
-RUN chmod 0755 /root/entrypoint.sh
-
-# Config consul.json
-
-# COPY consul.json /etc/consul.json
-# RUN chmod 0755 /etc/consul.json
-
-SHELL ["/bin/zsh", "-c"]
-CMD ["/root/entrypoint.sh"]
