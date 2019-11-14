@@ -18,7 +18,8 @@ USER root
 
 RUN apt-get update && \
     curl -fsSL https://get.docker.com | bash && \
-    apt-get clean
+    apt-get clean && \
+    mkdir -p /tmp
 
 # PIP package installs
 
@@ -112,3 +113,5 @@ RUN cd /tmp && \
     curl -LO https://github.com/concourse/concourse/releases/download/$(curl -s https://github.com/concourse/concourse/releases/latest | sed 's/^.*tag\///' | sed 's/\".*$//')/fly_linux_amd64 && \
     chmod +x fly_linux_amd64 && \
     mv fly_linux_amd64 /usr/local/bin/fly
+
+RUN rm -rf /tmp
