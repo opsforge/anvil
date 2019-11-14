@@ -16,6 +16,8 @@ USER root
 
 # Ubuntu package installs
 
+SHELL ["/bin/bash", "-c"]
+
 RUN apt-get update && \
     curl -fsSL https://get.docker.com | bash && \
     apt-get clean && \
@@ -115,3 +117,6 @@ RUN cd /tmp && \
     mv fly_linux_amd64 /usr/local/bin/fly
 
 RUN rm -rf /tmp
+
+SHELL ["/bin/zsh", "-c"]
+CMD ["/root/entrypoint.sh"]
