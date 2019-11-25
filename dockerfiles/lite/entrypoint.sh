@@ -20,6 +20,9 @@ while [ $# -gt 0 ]; do
     --shell=*)
       shell_set="${1#*=}"
       ;;
+    --proxy)
+      proxy="true"
+      ;;
     *)
       printf "***************************\n"
       printf "* Error: Invalid argument.*\n"
@@ -49,7 +52,11 @@ shellsource() {
 
 butterfly-up() {
   echo "root:${btpass:-password}" | chpasswd
-  butterfly.server.py --host="0.0.0.0" --port=5757 --unsecure
+  if [ $1 ] ; then
+    butterfly.server.py --host="0.0.0.0" --port=5757 --unsecure --i_hereby_declare_i_dont_want_any_security_whatsoever
+  else
+    butterfly.server.py --host="0.0.0.0" --port=5757 --unsecure
+  fi
 }
 
 # consul-join() {
@@ -88,4 +95,4 @@ cd /root
 shellsource ${fullname} ${myemail} ${giturlwithcred}
 repos ${pastebinurl}
 change_shell ${shell_set}
-butterfly-up
+butterfly-up ${proxy}
