@@ -36,7 +36,7 @@
             {
               "id": "tyk_endpoint_1",
               "name": "tyk_api_gw_endpoint_1",
-              "tags": ["IDE"],
+              "tags": ["APIGW"],
               "address": "localhost",
               "meta": {
                 "meta": "use a fully featured ide from a browser"
@@ -65,3 +65,4 @@
     image: consul
     networks:
       - tyk
+      - consul
