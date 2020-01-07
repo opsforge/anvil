@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# change this to username to customise the stack labels
+stack="anvil"
+
 components=""
 
 while [ $# -gt 0 ]; do
@@ -83,7 +86,7 @@ fi
 if echo $destroy | grep true &>/dev/null ; then
   clear
   echo "Destroy action requested."
-  docker-compose -p anvil down --remove-orphans
+  docker-compose -p ${stack} down --remove-orphans
   exit 0
 fi
 
@@ -115,7 +118,7 @@ done
 
 cat ./composer/footer.yaml >> ./docker-compose.yaml
 
-docker-compose -p anvil up -d --remove-orphans
+docker-compose -p ${stack} up -d --remove-orphans
 
 if [ $? -eq 0 ] ; then
   echo ""

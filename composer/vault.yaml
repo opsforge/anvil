@@ -1,16 +1,98 @@
   ## VAULT CONTAINER
 
-  # mkdir -p ./vault_certs && openssl req -nodes -x509 -newkey rsa:2048 -keyout ./vault_certs/vault.key -out ./vault_certs/vault.pem -days 365 -subj "/C=GB/ST=Scotland/L=Edinburgh/O=opsforge/OU=OPS/CN=localhost/emailAddress=nope@nope.com"
+  # SETUP AGENT
+  vault_primer:
+    restart: "no"
+    image: opsforge/openssl
+    volumes:
+      - ./vault_certs:/certs
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        if [ ! -f /certs/vault.key ] ; then
+          cat <<EOF> /certs/vault.req.conf
+        [req]
+        distinguished_name = req_distinguished_name
+        x509_extensions = v3_req
+        prompt = no
+        [req_distinguished_name]
+        C = GB
+        ST = Scotland
+        L = Edinburgh
+        O = MyCompany
+        OU = OPS
+        CN = localhost
+        [v3_req]
+        keyUsage = keyEncipherment, dataEncipherment
+        extendedKeyUsage = serverAuth
+        subjectAltName = @alt_names
+        [alt_names]
+        DNS.1 = localhost
+        EOF
 
+          openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+            -keyout /certs/vault.key \
+            -out /certs/vault.pem \
+            -config /certs/vault.req.conf \
+            -extensions 'v3_req'
+        fi
+  # SERVER
   vault:
+    depends_on:
+      - vault_primer
     cap_add:
       - IPC_LOCK
     image: vault
     ports:
       - 8443:8443
+    command:
+      - /bin/sh
+      - -c
+      - |
+        while [ ! -f /certs/vault.key ] ; do
+          echo "Waiting for sidecar to generate certs..."
+          sleep 10
+        done
+
+        if [ ! -f /vault/file/unseal_key ] ; then
+          until [ -f /vault/file/unseal_key ] ; do
+            echo "unseal key not yet found..."
+            docker-entrypoint.sh server -dev | grep -i 'unseal key:' > /vault/file/unseal_key &
+            sleep 20
+            sed -i 's/Unseal Key: //' /vault/file/unseal_key
+          done
+        else
+          docker-entrypoint.sh server &
+          pid=$$!
+          sleep 10
+          export VAULT_ADDR='https://localhost:8443'
+          export VAULT_SKIP_VERIFY="true"
+          vault operator unseal $$(cat /vault/file/unseal_key)
+
+          trap "kill $$pid 2> /dev/null" EXIT
+          while kill -0 $$pid 2> /dev/null; do
+            sleep 5
+          done
+          trap - EXIT
+        fi
     environment:
-      - 'VAULT_DEV_ROOT_TOKEN=ChangeThisVaultToken'
-      - 'VAULT_LOCAL_CONFIG={"backend": {"file": {"path": "/vault/file"}}, "default_lease_ttl": "168h", "max_lease_ttl": "720h", "listener": {"tcp": {"address": "0.0.0.0:8443", "tls_cert_file": "/certs/vault.pem", "tls_key_file": "/certs/vault.key"}}}'
+      VAULT_DEV_ROOT_TOKEN_ID: 'ChangeThisVaultToken'
+      VAULT_LOCAL_CONFIG: |
+        listener "tcp" {
+          address       = "0.0.0.0:8443"
+          tls_cert_file = "/certs/vault.pem"
+          tls_key_file  = "/certs/vault.key"
+        }
+
+        ui = true
+
+        max_lease_ttl = "720h"
+        default_lease_ttl = "168h"
+
+        storage "file" {
+          path = "/vault/file"
+        }
     volumes:
       - ./vault_logs:/vault/logs
       - ./vault_data:/vault/file
