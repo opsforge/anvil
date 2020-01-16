@@ -116,7 +116,7 @@ RUN cd /tmp && \
     chmod +x fly_linux_amd64 && \
     mv fly_linux_amd64 /usr/local/bin/fly
 
-RUN rm -rf /tmp
+RUN rm -rf /tmp/*
 
 SHELL ["/bin/zsh", "-c"]
 CMD ["/root/entrypoint.sh"]
