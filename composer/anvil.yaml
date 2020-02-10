@@ -82,6 +82,7 @@
       - concourse4
       - consul
       - ansible
+      - es
   ## CONSUL
   consul:
     restart: unless-stopped

@@ -1,7 +1,7 @@
   # ELK CONTAINERS
   es:
     restart: always
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.0.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
     expose:
       - 9200
       - 9300
@@ -23,18 +23,35 @@
           - elasticsearch
   ls:
     restart: always
-    image: docker.elastic.co/logstash/logstash:6.0.1
+    image: docker.elastic.co/logstash/logstash:7.5.2
+    entrypoint: sh
+    command:
+    - -c
+    - |
+      cat <<EOF> /usr/share/logstash/pipeline/logstash.conf
+      input {
+        tcp {
+          port => 5000
+          codec => plain
+        }
+      }
+      
+      output {
+        elasticsearch { hosts => ["es:9200"] }
+      }
+      EOF
+      
+      /usr/local/bin/docker-entrypoint
+
     ports:
       - 5000:5000
     # environment:
     #   - LOG_LEVEL=debug
-    volumes:
-      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     networks:
       - es
   kib:
     restart: always
-    image: docker.elastic.co/kibana/kibana:6.0.1
+    image: docker.elastic.co/kibana/kibana:7.5.2
     expose:
       - 5601
     networks:
@@ -48,7 +65,7 @@
       # Add htpassword here: http://www.htaccesstools.com/htpasswd-generator/ (example below is username=username password=password) - make sure to escape $ signs with $$
       HTPASSWD: 'username:$$apr1$$3X/xufbq$$xBqXarJxuOD0AMXJ4OYin.'
     ports:
-      - 5601:80
+      - 8000:80
     image: beevelop/nginx-basic-auth
     networks:
       - es
