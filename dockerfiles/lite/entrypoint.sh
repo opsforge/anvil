@@ -39,7 +39,7 @@ done
 shellsource() {
   # Set up shellsource with Rancher attributue
   if [ $3 ]; then
-    git clone --no-checkout $3 ~/home.tmp
+    GIT_SSL_NO_VERIFY=true git clone --no-checkout $3 ~/home.tmp
     mv -f ~/home.tmp/.git ~/
     rm -rf ~/home.tmp
     cd ~
