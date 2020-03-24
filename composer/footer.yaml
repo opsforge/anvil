@@ -11,3 +11,4 @@ networks:
   consul:
   ansible:
   tyk:
+  jenkins:
