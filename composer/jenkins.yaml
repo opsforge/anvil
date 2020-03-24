@@ -21,7 +21,7 @@
   
   jenkins_slave:
     restart: unless-stopped
-    image: jenkinsci/blueocean
+    image: docker:dind
     privileged: true
     expose:
       - 2376
