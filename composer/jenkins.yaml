@@ -1,6 +1,6 @@
   jenkins:
     restart: unless-stopped
-    image: jenkinsci/blueocean
+    image: jenkinsci/blueocean:1.22.0
     privileged: true
     ports:
       - 8003:8080
@@ -21,7 +21,7 @@
   
   jenkins_slave:
     restart: unless-stopped
-    image: docker:dind
+    image: opsforge/dind:latest
     privileged: true
     expose:
       - 2376
