@@ -1,7 +1,6 @@
   jenkins:
     restart: unless-stopped
     image: jenkinsci/blueocean
-    command: quickstart
     privileged: true
     ports:
       - 8003:8080
@@ -23,7 +22,6 @@
   jenkins_slave:
     restart: unless-stopped
     image: jenkinsci/blueocean
-    command: quickstart
     privileged: true
     expose:
       - 2376
