@@ -46,6 +46,9 @@ while [ $# -gt 0 ]; do
     --tyk)
       components="$components tyk"
       ;;
+    --jenkins)
+      components="$components jenkins"
+      ;;
     --destroy)
       destroy="true"
       ;;

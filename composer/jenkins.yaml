@@ -1,0 +1,83 @@
+  jenkins:
+    restart: unless-stopped
+    image: jenkinsci/blueocean
+    command: quickstart
+    privileged: true
+    ports:
+      - 8003:8080
+    expose:
+      - 8080
+      - 50000
+    environment:
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+    volumes:
+      - ./jenkins/home:/var/jenkins_home
+      - ./jenkins/certs:/certs/client
+    networks:
+      jenkins:
+        aliases:
+          - jenkinsmaster
+  
+  jenkins_slave:
+    restart: unless-stopped
+    image: jenkinsci/blueocean
+    command: quickstart
+    privileged: true
+    expose:
+      - 2376
+    environment:
+      - DOCKER_TLS_CERTDIR=/certs
+    volumes:
+      - ./jenkins/home:/var/jenkins_home
+      - ./jenkins/certs:/certs/client
+    networks:
+      jenkins:
+        aliases:
+          - slave
+          - docker
+
+  ## CONSUL SIDEKICK
+  consul_jenkins:
+    restart: unless-stopped
+    command:
+      - /bin/sh
+      - -c
+      - |
+        cat <<EOF> /etc/consul.json
+        {
+          "services": [
+            {
+              "id": "jenkins_cicd_1",
+              "name": "concourse_4_cicd",
+              "tags": ["CICD","automation"],
+              "address": "localhost",
+              "meta": {
+                "meta": "continous integration and deployment tool from CloudBees"
+              },
+              "port": 8080,
+              "checks": [
+                {
+                  "id": "cicd_tcp_check_1",
+                  "name": "ci/cd tcp check",
+                  "tcp": "jenkins:8080",
+                  "interval": "10s",
+                  "timeout": "3s"
+                }
+              ],
+              "weights": {
+                "passing": 1,
+                "warning": 1
+              }
+            }
+          ]
+        }
+        EOF
+        consul_if=$$(getent hosts consul | cut -d ' ' -f 1 | cut -d '.' -f1-2 | cut -d ' ' -f3)
+        consul_addr=$$(ip addr | grep $$consul_if | grep inet | sed 's/.*inet.//' | sed 's/\ brd.*//' | sed 's/\/.*//')
+        consul agent -retry-join "consul" -bind=$$consul_addr -data-dir=/etc/consul/data -datacenter=opsforge -node=jenkins -config-file=/etc/consul.json
+    image: consul
+    networks:
+      - consul
+      - jenkins
