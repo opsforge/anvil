@@ -14,5 +14,6 @@ deskible/*
 consul-data/*
 site/*
 vault_*
+consul/*
 ansible/*
 *.tgz

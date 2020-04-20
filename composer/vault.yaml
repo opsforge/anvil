@@ -90,8 +90,11 @@
         max_lease_ttl = "720h"
         default_lease_ttl = "168h"
 
-        storage "file" {
-          path = "/vault/file"
+        #storage "file" {
+        #  path = "/vault/file"
+        #}
+        storage "consul" {
+          address = "unix:///vault/file/consul.sock"
         }
     volumes:
       - ./vault_logs:/vault/logs
@@ -103,12 +106,22 @@
   ## CONSUL SIDEKICK
   consul_vault:
     restart: unless-stopped
+    volumes:
+      - ./vault_data:/socket_share
     command:
       - /bin/sh
       - -c
       - |
         cat <<EOF> /etc/consul.json
         {
+          "addresses": {
+             "http": "unix:///socket_share/consul.sock"
+          },
+          "unix_sockets": {
+             "user": "1",
+             "group": "1",
+             "mode": "0777"
+          },
           "services": [
             {
               "id": "vault_api_1",
