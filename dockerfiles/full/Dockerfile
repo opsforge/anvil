@@ -2,10 +2,10 @@
 
 FROM opsforge/anvil:lite
 
-ENV VAULTVER="1.4.2"
-ENV TFVER="0.12.26"
-ENV BOSHVER="6.3.0"
-ENV CONSULVER="1.8.0"
+ENV VAULTVER="1.5.3"
+ENV TFVER="0.13.2"
+ENV BOSHVER="6.4.0"
+ENV CONSULVER="1.8.4"
 
 MAINTAINER opsforge.io
 LABEL type="full"
@@ -67,6 +67,12 @@ RUN cd /tmp && \
     chmod +x consul && \
     mv consul /usr/local/bin/ && \
     rm -rf /tmp/*
+    
+# Install Certbot
+
+RUN apt-get update && \
+    apt-get install -y certbot && \
+    apt-get clean
 
 # Install GO
 
