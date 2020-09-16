@@ -71,7 +71,7 @@ RUN cd /tmp && \
 # Install Certbot
 
 RUN apt-get update && \
-    apt-get install -y certbot && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y certbot && \
     apt-get clean
 
 # Install GO
