@@ -2,10 +2,10 @@
 
 FROM opsforge/anvil:lite
 
-ENV VAULTVER="1.5.3"
-ENV TFVER="0.13.2"
-ENV BOSHVER="6.4.0"
-ENV CONSULVER="1.8.4"
+ENV VAULTVER="1.6.2"
+ENV TFVER="0.14.6"
+ENV BOSHVER="6.4.1"
+ENV CONSULVER="1.9.3"
 
 MAINTAINER opsforge.io
 LABEL type="full"
@@ -25,8 +25,22 @@ RUN apt-get update && \
 
 # PIP package installs
 
-RUN pip install boto3 && \
-    pip install docker-compose
+RUN pip3 install boto3
+
+# Get docker compose
+
+RUN curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
+    chmod +x /usr/local/bin/docker-compose
+    
+# AWS CLI install
+
+RUN mkdir -p ./awscli && \
+    cd ./awscli && \
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+    unzip awscliv2.zip && \
+    ./aws/install && \
+    cd ../ && \
+    rm -rf ./awscli
 
 # Install KOPS
 
@@ -71,13 +85,9 @@ RUN cd /tmp && \
 # Install Certbot
 
 RUN apt-get update && \
+    # dep fix for pip3
+    pip3 install urllib3 chardet requests --upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y certbot && \
-    apt-get clean
-
-# Install GO
-
-RUN apt-get update && \
-    apt-get install -y golang && \
     apt-get clean
 
 # Install NodeJS

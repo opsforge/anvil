@@ -1,6 +1,6 @@
 # Dockerfile of opsforge.io DevUtils for PaaS use - Copyright (C) 2017 George Svachulay - Apache 2.0 License
 
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 MAINTAINER opsforge.io
 LABEL name="anvil"
@@ -22,14 +22,38 @@ RUN apt-get update && \
 
 # Ubuntu package installs
 
-RUN apt-get -y install git zsh curl wget nano telnet dnsutils jq python-pip python-dev libsqlite3-dev libffi-dev libssl-dev netcat iproute2 sshpass inetutils-ping vim git-crypt unzip pwgen groff && \
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install \
+      git \
+      zsh \
+      curl \
+      wget \
+      nano \
+      telnet \
+      dnsutils \
+      jq \
+      # python-pip \
+      # python-dev \
+      libsqlite3-dev \
+      libffi-dev \
+      libssl-dev \
+      netcat \
+      iproute2 \
+      sshpass \
+      inetutils-ping \
+      vim \
+      git-crypt \
+      unzip \
+      pwgen \
+      groff \
+      python3 \
+      python3-pip \
+    && \
     apt-get clean
 
 # PIP package installs
 
-RUN pip install awscli && \
-    pip install libsass && \
-    pip install butterfly
+RUN pip3 install libsass && \
+    pip3 install butterfly
 
 # ZSH setup and terminal broadcasting
 
